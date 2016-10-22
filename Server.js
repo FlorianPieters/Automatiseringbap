@@ -1,20 +1,19 @@
-var express = require("express");
-
+var path = require('path');
+var express = require('express');
+var logger = require('morgan');
 var app = express();
-var bodyparser = require("body-parser");
 
+// Log the requests
+app.use(logger('dev'));
 
-app.use(bodyparser.json());
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public'))); 
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", 'POST,GET,PUT,DELETE,OPTIONS');
-  next();
+// Route for everything else.
+app.get('*', function(req, res){
+  res.send('Hello World');
 });
 
-app.get("/", function(res,req){
-	res.send(200, "connected");
-});
-
+// Fire it up!
 app.listen(3000);
+console.log('Listening on port 3000');
