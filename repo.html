@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/repo.css">
+
+	<!-- bootstrap CDN -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<link href='https://fonts.googleapis.com/css?family=Marck+Script' rel='stylesheet' type='text/css'>
+
+<title>Automatisering BAP</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300'>
+
+<script src="routing.js"></script>
+
+<meta charset="utf-8">
+</head>
+<body>
+	<div id="header"><h1 id="autobap"><strong>AUTOMATISERING BACHELORPROEF</strong></h1></div>
+	<div id="blok">
+	
+
+
+		<input type="submit" value="Overzicht" id="overzichtbtn" onclick="window.location.href='overzicht.html'" >
+		<input type="submit" value="Info Student" id="infobtn" onclick="window.location.href='info.html'" >
+
+		<select id="selectname">
+ 			<option value="volvo">Florian Pieters</option>
+			<option value="saab">Kilian Pauwels</option>
+ 			<option value="mercedes">...</option>
+		</select>
+		<div id="content">
+			<div id="reponav">
+				<input type="submit" value="Laatste commit" id="commitbtn" onclick="window.location.href='repo.html'" >
+				<input type="submit" value="Issues" id="issuebtn" onclick="window.location.href='repo.html'" >
+				<input type="submit" value="scriptie" id="scriptiebtn" onclick="window.location.href='repo.html'" >
+				<input type="submit" value="Laaste logentry" id="logbtn" onclick="window.location.href='repo.html'" >
+				<input type="submit" value="Add comment" id="commentbtn" onclick="window.location.href='repo.html'" >
+				<input type="submit" value="Add issue" id="addissuebtn" onclick="window.location.href='repo.html'" >
+			</div>
+			<div id="repo">
+				<p id="repotext">Hier komen de issues, commits of scripties of laatste log entry</p>
+			</div>
+
+
+		</div>
+
+
+	</div> <!-- end login -->
+	<div id="footer">
+		<img id="aplogo" src="doc/ap.png" alt="AP logo">
+		<div id="email">
+			<p>email:</p>
+			<a href="url">kilianpauwels@gmail.com</a>
+			<a href="url">florian.pieters@hotmail.com</a>
+			
+		</div>
+	</div>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+</body>
+</html>

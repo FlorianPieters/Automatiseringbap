@@ -1,0 +1,135 @@
+@charset "utf-8";
+
+@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url(http://meyerweb.com/eric/tools/css/reset/reset.css);
+
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+
+#header {
+	display: inline-block;
+	vertical-align: top;
+
+	width: 100%;
+	height:125px;
+	background-color: #e5e5e5;
+}
+#autobap{
+	padding-top: 15px;
+	font-weight:1000;
+	text-align: center;
+	font-size: 3em;
+
+}
+
+#blok {
+	display: inline-block;
+	vertical-align: top;
+
+	width: 100%;
+	height: 480px;
+
+}
+
+#footer {
+	display: inline-block;
+	vertical-align: top;
+
+	width: 100%;
+	height:135px;
+	background-color: #e5e5e5;
+}
+#aplogo{
+	display: inline-block;
+	float: right;
+ 	padding-top: 22px;
+	padding-right: 50px;
+}
+#email {
+	float: left;
+	width: 20%;
+	padding-top: 35px;
+	padding-left: 50px;
+	
+}
+
+body {
+	
+	background: #f4f4f4;
+	color: #5a5656;
+	font: 100%/1.5em 'Open Sans', sans-serif;
+  margin: 0;
+}
+
+a { text-decoration: none; }
+
+h1 { font-size: 1em;
+
+font-weight:bold;
+ }
+
+h1, p {
+	margin-bottom: 10px;
+}
+
+
+
+.uppercase { text-transform: uppercase; }
+
+/* ---------- LOGIN ---------- */
+
+
+
+#login {
+
+	margin: 50px auto;
+	width: 275px;
+	
+}
+
+form fieldset input[type="text"], input[type="password"] {
+	background: #e5e5e5;
+	border: none;
+	border-radius: 3px;
+	color: #5a5656;
+	font-family: inherit;
+	font-size: 14px;
+	height: 50px;
+	outline: none;
+	padding: 0px 10px;
+	width: 280px;
+  -webkit-appearance:none;
+}
+
+form fieldset input[type="submit"] {
+	background-color: #008dde;
+	border: none;
+	border-radius: 3px;
+	color: #f4f4f4;
+	cursor: pointer;
+	font-family: inherit;
+	height: 50px;
+	text-transform: uppercase;
+	width: 280px;
+  -webkit-appearance:none;
+}
+
+form fieldset a {
+	color: #5a5656;
+	font-size: 10px;
+}
+
+form fieldset a:hover { text-decoration: underline; }
+
+
+#email a {
+
+}
+
+
+
+
+
+
+
