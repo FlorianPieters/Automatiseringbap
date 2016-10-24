@@ -49,14 +49,22 @@ app.controller("repoController", function($scope,$http){
 app.controller("commitController", function($scope,$http){
 	$scope.title ="Commits";
 	$scope.commits = [];
+	$scope.message = [];
 
 var init = function(){
 
 	console.log("init");
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/commits")
 	.success(function(results){
-		$scope.commits = results[0].author.login;
+		$scope.commits = results;
+		for(var i=0; i < $scope.commits.length; i++){
+			var current = $scope.commits[i].commit.message;
+			if($scope.message.indexOf(current)<0){
+				$scope.message.push(current);
+			}
+		}
 		console.log(results);
+		console.log($scope.message);
 	})
 	.error(function(error){
 		console.log(error);
