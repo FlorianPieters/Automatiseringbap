@@ -2,7 +2,10 @@
 <html ng-app="myApp">
 <head>
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<link rel="stylesheet" type="text/css" href="css/overzicht.css">
+	<link rel="stylesheet" type="text/css" href="css/info.css">
+	<link rel="stylesheet" type="text/css" href="css/repo.css">
 
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 
@@ -22,30 +25,28 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300'>
 
 <script src="AngularRouting.js"></script>
 
 <meta charset="utf-8">
 </head>
-
 <body>
-	<header>
-		<a href="#home"><button>Home</button></a>
-		<a href="#repos"><button>Repos</button></a>
-	</header>
-
-	<div id="main">
-
-		<div ng-view>
-
-		</div>
-
+	<div id="header"><h1 id="autobap"><strong>AUTOMATISERING BACHELORPROEF</strong></h1></div>
+	<div id="blok">
+	<div ng-view>
+	
 	</div>
-
-	<footer>
-		<p>Made by Florian Pieters en Kilian Pauwels. 3EA1.</p>
-	</footer>
-
+	</div>
+	<div id="footer">
+		<img id="aplogo" src="img/ap.png" alt="AP logo">
+		<div id="email">
+			<p>email:</p>
+			<a href="url">kilianpauwels@gmail.com</a>
+			<a href="url">florian.pieters@hotmail.com</a>
+			
+		</div>
+	</div>
 
 </body>
 </html>
