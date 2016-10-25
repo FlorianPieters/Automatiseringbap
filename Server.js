@@ -1,7 +1,18 @@
 var path = require('path');
 var express = require('express');
 var logger = require('morgan');
+var firebase = require('firebase');
+
 var app = express();
+
+var config = {
+    apiKey: "AIzaSyAaK_3MRFBRGEMgQ6C6ZpjlRTIXo4pQURI",
+    authDomain: "automatiseringbap.firebaseapp.com",
+    databaseURL: "https://automatiseringbap.firebaseio.com",
+    storageBucket: "automatiseringbap.appspot.com",
+    messagingSenderId: "402713955204"
+  };
+firebase.initializeApp(config);
 
 // Log the requests
 app.use(logger('dev'));
