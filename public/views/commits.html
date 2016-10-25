@@ -1,6 +1,11 @@
 <div class="container">
 	<h1>{{title}}</h1>
+	
 	<ul>
-	<li ng-repeat="commit in commits">{{commits[i].commit.message}}</li>
+	<li ng-repeat="commit in commits">
+		<p>{{commit.commit.message}}</p>
+		<p>{{commit.author.login}}</p>
+	</li>
 	</ul>
+
 </div>
