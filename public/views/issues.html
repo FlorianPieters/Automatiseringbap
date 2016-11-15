@@ -1,0 +1,11 @@
+<div class="container">
+	<h1>{{title}}</h1>
+	
+	<ul>
+	<li ng-repeat="issue in issues">
+		<p>title issue: {{issue.title}}</p>
+		<p>author issue: {{issue.user.login}}</p>
+	</li>
+	</ul>
+
+</div>

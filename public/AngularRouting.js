@@ -23,6 +23,11 @@ app.config(function($routeProvider){
 			controller : "commitController"
 		})
 
+		.when("/issues", {
+			templateUrl :"views/issues.html",
+			controller : "issuesController"
+		})
+
 		.when("/repo", {
 			templateUrl :"views/repo.html",
 			controller : "repoController"
@@ -73,5 +78,19 @@ var init = function(){
 
 	init();
 	
+});
+
+app.controller("issuesController", function($scope,$http){
+	$scope.title ="Issues";
+	$scope.issues = [];
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
+	.success(function(results){
+		$scope.issues = results;
+		console.log(results);
+	})
+	.error(function(error){
+		console.log(error);
+	});
 });
 
