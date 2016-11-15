@@ -13,6 +13,11 @@ app.config(function($routeProvider){
 			controller : "overzichtController"
 		})
 
+		.when("/readme", {
+			templateUrl : "views/readme.html",
+			controller : "readmeController"
+		})
+
 		.when("/info", {
 			templateUrl : "views/info.html",
 			controller : "infoController"
@@ -94,3 +99,16 @@ app.controller("issuesController", function($scope,$http){
 	});
 });
 
+app.controller("readmeController", function($scope,$http){
+	$scope.title = "Readme";
+	$scope.readme = [];
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/readme")
+	.success(function(results){
+		console.log(results);
+		$scope.readme = results;
+	})
+	.error(function(error){
+		console.log(error);
+	});
+});
