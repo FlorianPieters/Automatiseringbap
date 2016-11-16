@@ -13,6 +13,11 @@ app.config(function($routeProvider){
 			controller : "overzichtController"
 		})
 
+		.when("/addIssue", {
+			templateUrl : "views/addIssue.html",
+			controller : "addIssueController"
+		})
+
 		.when("/readme", {
 			templateUrl : "views/readme.html",
 			controller : "readmeController"
@@ -50,6 +55,16 @@ app.controller("overzichtController", function($scope,$http){
 
 app.controller("infoController", function($scope,$http){
 	$scope.title ="info";
+	$scope.studenten = [];
+
+	$http.get("https://automatiseringbap.firebaseio.com/rest/studenten.json")
+	.success(function(results){
+		$scope.studenten = results;
+		console.log(results);
+	})
+	.error(function(error){
+		console.log(error);
+	});
 });
 
 app.controller("repoController", function($scope,$http){
@@ -111,4 +126,25 @@ app.controller("readmeController", function($scope,$http){
 	.error(function(error){
 		console.log(error);
 	});
+});
+
+app.controller("addIssueController", function($scope,$http){
+
+	this.issue = {
+		title: '',
+		body: ''
+	};
+
+
+	this.upload = function(){
+		console.log("user clicked upload", this.issue);
+	$http.post("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues?title={{issue.title}}&body={{issue.body}}")
+	.success(function(results){
+		console.log(results.status);
+	})
+	.error(function(error){
+		console.log(error);
+	});
+	
+	}
 });

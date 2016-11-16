@@ -1,0 +1,12 @@
+<div class="col-md-12 cox-xs-12" id="upload" ng-controller="addIssueController as ctrl">
+
+		<h1>Add Issue</h1>
+		<div >
+		<form name="myForm" ng-submit="ctrl.upload()" class="addArtistForm">
+			<table>
+				<tr><td><p>Title:</p></td><td><input type="text" ng-model="ctrl.issue.title"></td></tr>
+			<tr><td><p>Body:</p></td><td> <input type="text" ng-model="ctrl.issue.body"></td></tr>
+			<tr><td></td><td><input type="submit" value="Upload"></td></tr></table>
+		</form>
+	</div>
+	</div>
