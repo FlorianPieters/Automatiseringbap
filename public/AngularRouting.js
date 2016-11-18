@@ -1,4 +1,8 @@
-var app = angular.module("myApp", ["ngRoute"]);
+var app = angular.module("myApp", [ "ngRoute","firebase"]);
+
+app.constant("db", {
+	url: "https://automatiseringbap.firebaseio.com"
+});
 
 app.config(function($routeProvider){
 	$routeProvider
@@ -53,18 +57,14 @@ app.controller("overzichtController", function($scope,$http){
 	$scope.title ="overzicht";
 });
 
-app.controller("infoController", function($scope,$http){
+app.controller("infoController", function($scope,$firebaseArray, db){
 	$scope.title ="info";
 	$scope.studenten = [];
-
-	$http.get("https://automatiseringbap.firebaseio.com/rest/studenten.json")
-	.success(function(results){
-		$scope.studenten = results;
-		console.log(results);
-	})
-	.error(function(error){
-		console.log(error);
-	});
+	var ref  = firebase.database().ref().child("studenten");
+	$scope.studenten = $firebaseArray(ref);
+	console.log($scope.studenten);
+	
+	//console.log(studenten);
 });
 
 app.controller("repoController", function($scope,$http){
