@@ -53,8 +53,13 @@ app.controller("loginController", function($scope,$http){
 	$scope.title ="Home";
 });
 
-app.controller("overzichtController", function($scope,$http){
+app.controller("overzichtController", function($scope,$firebaseArray){
 	$scope.title ="overzicht";
+	$scope.studenten = [];
+	var ref  = firebase.database().ref().child("studenten");
+	$scope.studenten = $firebaseArray(ref);
+	console.log($scope.studenten);
+
 });
 
 app.controller("infoController", function($scope,$firebaseArray, db){

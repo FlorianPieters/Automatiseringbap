@@ -12,30 +12,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td><a href="#info">Florian Pieters </a></td>
+    <tr ng-repeat="$id in studenten" >
+      <th scope="row">{{$id.$id}}</th>
+      <td ><a href="#info">{{$id.naam}} </a></td>
       <td> Automatisering</td>
       <td>13</td>
       <td>14</td>
-      <td><a href="url">Laatste stand repo</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td><a href="#info">Kilian Pauwels</a> </td>
-      <td> Automatisering</td>
-      <td>10</td>
-      <td>14</td>
-      <td><a href="url">Laatste stand repo</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td><a href="info.html">...</a> </td>
-      <td>...</td>
-      <td>10</td>
-      <td>20</td>
       <td><a href="url">Laatste stand repo</a></td>
       <td></td>
     </tr>
