@@ -1,12 +1,9 @@
-<<<<<<< Updated upstream
-var app = angular.module("myApp", [ "ngRoute","firebase"]);
+var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase"]);
+
 
 app.constant("db", {
 	url: "https://automatiseringbap.firebaseio.com"
 });
-=======
-var app = angular.module("myApp", ["ngRoute", "satellizer"]);
->>>>>>> Stashed changes
 
 app.config(function($routeProvider, $authProvider){
 	$routeProvider
@@ -58,7 +55,25 @@ app.config(function($routeProvider, $authProvider){
 
 });
 
+app.factory("testService", function(){
+	
 
+	return {
+		getTest : function(){
+			return "test";
+		}
+	}
+});
+
+app.factory("getStudentIdService", function(){
+	var id;
+	return {
+		getId : function(){
+			var id = studenten.$id;
+			return id; 
+		}
+	}
+});
 
 
 app.controller("loginController", function($scope,$http, $auth){
@@ -68,22 +83,26 @@ app.controller("loginController", function($scope,$http, $auth){
     };
 });
 
-app.controller("overzichtController", function($scope,$firebaseArray){
+app.controller("overzichtController", function($scope,$firebaseArray, testService, getStudentIdService){
 	$scope.title ="overzicht";
 	$scope.studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
 	$scope.studenten = $firebaseArray(ref);
 	console.log($scope.studenten);
-
+	$scope.test = testService.getTest();
+	console.log($scope.test);
 });
 
-app.controller("infoController", function($scope,$firebaseArray, db){
+app.controller("infoController", function($scope,$firebaseArray, db, getStudentIdService){
 	$scope.title ="info";
 	$scope.studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
 	$scope.studenten = $firebaseArray(ref);
 	console.log($scope.studenten);
 	
+	$scope.id = getStudentIdService.id;
+	console.log($scope.id);
+
 	//console.log(studenten);
 });
 

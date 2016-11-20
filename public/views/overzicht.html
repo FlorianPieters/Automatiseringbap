@@ -14,7 +14,7 @@
   <tbody>
     <tr ng-repeat="$id in studenten" >
       <th scope="row">{{$id.$id}}</th>
-      <td ><a href="#info">{{$id.naam}} </a></td>
+      <td ><a href="#info" ng-click="getId()">{{$id.naam}} </a></td>
       <td> Automatisering</td>
       <td>13</td>
       <td>14</td>
@@ -23,6 +23,7 @@
     </tr>
   </tbody>
 </table>
+  <p> {{test}}</p>
 <div id="activiteit"><div id="circle"></div><div id="circle1"></div><div id="circle2"></div></div>
 </div>
 	</div> 
