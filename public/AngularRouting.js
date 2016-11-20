@@ -1,10 +1,14 @@
+<<<<<<< Updated upstream
 var app = angular.module("myApp", [ "ngRoute","firebase"]);
 
 app.constant("db", {
 	url: "https://automatiseringbap.firebaseio.com"
 });
+=======
+var app = angular.module("myApp", ["ngRoute", "satellizer"]);
+>>>>>>> Stashed changes
 
-app.config(function($routeProvider){
+app.config(function($routeProvider, $authProvider){
 	$routeProvider
 
 		.when("/login", {
@@ -47,10 +51,21 @@ app.config(function($routeProvider){
 			controller : "repoController"
 		});
 
+		$authProvider.github({
+      	clientId: 'db2e9e71839b2e01e776',
+      	  redirectUri: 'http://localhost:3000/index.html#/overzicht'
+   		});
+
 });
 
-app.controller("loginController", function($scope,$http){
+
+
+
+app.controller("loginController", function($scope,$http, $auth){
 	$scope.title ="Home";
+	 $scope.authenticate = function(provider) {
+     	$auth.authenticate(provider);
+    };
 });
 
 app.controller("overzichtController", function($scope,$firebaseArray){
