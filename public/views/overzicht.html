@@ -12,9 +12,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="$id in studenten" >
-      <th scope="row">{{$id.$id}}</th>
-      <td ><a href="#info" ng-click="getId()">{{$id.naam}} </a></td>
+    <input type="button" ng-click="getTest()"></button>
+    
+    <tr ng-repeat="x in alleStudenten" >
+
+      <th scope="row">{{x.$id}}</th>
+      <td ><a href="#info" ng-click="getId()">{{x.naam}} </a></td>
+      <td><input type="button" ng-click="getId($x)"></td>
       <td> Automatisering</td>
       <td>13</td>
       <td>14</td>

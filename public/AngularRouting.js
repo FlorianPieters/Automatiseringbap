@@ -60,17 +60,18 @@ app.factory("testService", function(){
 
 	return {
 		getTest : function(){
+			alert("test");
 			return "test";
 		}
 	}
 });
 
 app.factory("getStudentIdService", function(){
-	var id;
+	var $id;
 	return {
-		getId : function(){
-			var id = studenten.$id;
-			return id; 
+		getId : function($id){
+			console.log($id);
+			return $id; 
 		}
 	}
 });
@@ -87,7 +88,22 @@ app.controller("overzichtController", function($scope,$firebaseArray, testServic
 	$scope.title ="overzicht";
 	$scope.studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
-	$scope.studenten = $firebaseArray(ref);
+	studenten = $firebaseArray(ref);
+
+	$scope.alleStudenten = [];
+	studenten.$loaded()
+    .then(function(){
+        angular.forEach(studenten, function(user) {
+            console.log(user);
+            $scope.alleStudenten.push(user);
+        })
+
+        console.log($scope.alleStudenten);
+    });
+
+    $scope.email = getStudentIdService.getId();
+
+	console.log("show studetnen:")
 	console.log($scope.studenten);
 	$scope.test = testService.getTest();
 	console.log($scope.test);
@@ -100,7 +116,7 @@ app.controller("infoController", function($scope,$firebaseArray, db, getStudentI
 	$scope.studenten = $firebaseArray(ref);
 	console.log($scope.studenten);
 	
-	$scope.id = getStudentIdService.id;
+	$scope.id = getStudentIdService.getId();
 	console.log($scope.id);
 
 	//console.log(studenten);
@@ -128,6 +144,7 @@ var init = function(){
 			}
 		}
 		console.log(results);
+		console.log(results.header);
 		console.log($scope.message);
 	})
 	.error(function(error){
@@ -136,7 +153,7 @@ var init = function(){
 }
 
 	init();
-	
+	$scope.commitaantal = $scope.commits.length;
 });
 
 app.controller("issuesController", function($scope,$http){
@@ -157,7 +174,7 @@ app.controller("readmeController", function($scope,$http){
 	$scope.title = "Readme";
 	$scope.readme = [];
 
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/readme")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/contents/README.md?ref=master")
 	.success(function(results){
 		console.log(results);
 		$scope.readme = results;
