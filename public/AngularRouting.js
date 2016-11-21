@@ -28,7 +28,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "readmeController"
 		})
 
-		.when("/info", {
+		.when("/info/:studentNaam", {
 			templateUrl : "views/info.html",
 			controller : "infoController"
 		})
@@ -46,6 +46,10 @@ app.config(function($routeProvider, $authProvider){
 		.when("/repo", {
 			templateUrl :"views/repo.html",
 			controller : "repoController"
+		})
+
+		.otherwise({
+			redirectTo: "/login"
 		});
 
 		$authProvider.github({
@@ -55,26 +59,31 @@ app.config(function($routeProvider, $authProvider){
 
 });
 
-app.factory("testService", function(){
-	
+app.service("dataService", ["$firebaseArray", function($firebaseArray,filterFilter){
+	var studenten = [];
+	var ref  = firebase.database().ref().child("studenten");
+	studenten = $firebaseArray(ref);
 
-	return {
-		getTest : function(){
-			alert("test");
-			return "test";
-		}
-	}
-});
+	var alleStudenten = [];
+	studenten.$loaded()
+    .then(function(){
+        angular.forEach(studenten, function(user) {
+            alleStudenten.push(user);
+        })
 
-app.factory("getStudentIdService", function(){
-	var $id;
-	return {
-		getId : function($id){
-			console.log($id);
-			return $id; 
-		}
-	}
-});
+        
+    });
+
+    this.getStudenten = function(){
+    	return alleStudenten;
+    };
+    this.getStudentAt = function(_naam){
+    	this.getStudenten();
+    	return filterFilter(alleStudenten, {
+    		naam: _naam
+    	})[0];
+    };
+}]);
 
 
 app.controller("loginController", function($scope,$http, $auth){
@@ -84,42 +93,19 @@ app.controller("loginController", function($scope,$http, $auth){
     };
 });
 
-app.controller("overzichtController", function($scope,$firebaseArray, testService, getStudentIdService){
+app.controller("overzichtController", function($scope,$firebaseArray, dataService){
 	$scope.title ="overzicht";
-	$scope.studenten = [];
-	var ref  = firebase.database().ref().child("studenten");
-	studenten = $firebaseArray(ref);
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
 
-	$scope.alleStudenten = [];
-	studenten.$loaded()
-    .then(function(){
-        angular.forEach(studenten, function(user) {
-            console.log(user);
-            $scope.alleStudenten.push(user);
-        })
-
-        console.log($scope.alleStudenten);
-    });
-
-    $scope.email = getStudentIdService.getId();
-
-	console.log("show studetnen:")
-	console.log($scope.studenten);
-	$scope.test = testService.getTest();
-	console.log($scope.test);
+	console.log($scope.data.studenten);
+	
 });
 
-app.controller("infoController", function($scope,$firebaseArray, db, getStudentIdService){
+app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService){
 	$scope.title ="info";
-	$scope.studenten = [];
-	var ref  = firebase.database().ref().child("studenten");
-	$scope.studenten = $firebaseArray(ref);
-	console.log($scope.studenten);
-	
-	$scope.id = getStudentIdService.getId();
-	console.log($scope.id);
-
-	//console.log(studenten);
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 });
 
 app.controller("repoController", function($scope,$http){
