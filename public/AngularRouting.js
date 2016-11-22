@@ -106,11 +106,14 @@ app.controller("infoController", function($scope, $firebaseArray, $routeParams, 
 	$scope.title ="info";
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
-	
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
 });
 
-app.controller("repoController", function($scope,$http){
+app.controller("repoController", function($scope,$http, dataService){
 	$scope.title ="Repo";
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
 });
 
 app.controller("commitController", function($scope,$http){

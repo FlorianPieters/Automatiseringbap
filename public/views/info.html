@@ -2,9 +2,7 @@
 		<a href="#repo"><input type="submit" value="repo Student" id="repobtn"></a>
 
 		<select id="selectname">
- 			<option value="option1">Florian Pieters</option>
-			<option value="option2">Kilian Pauwels</option>
- 			<option value="option3">...</option>
+ 			<option value="option1" ng-repeat="x in data.studenten">{{x.naam}}</option>
 		</select>
 		<div id="content">
 			
@@ -12,15 +10,15 @@
 				<p>Naam: {{student.naam}}</p>
 				<p>Gsm: {{student.gsm}}</p>
 				<p>Email: {{student.email}}</p>
-				<p>Bachelorproef: Automatiseren Bachelorproef</p>
-				<p>Promotor: Tim Dams en Maarten Luyts</p>
-				<p>Stage Bedrijf: Cloud communications</p>
+				<p>Bachelorproef: {{student.bachelorproef}}</p>
+				<p>Promotor: {{student.promotor}}</p>
+				<p>Stage Bedrijf: {{student.bedrijf}}</p>
 			</div>
 			<div id="gitgegevens">
 				<div id="circle"></div>
 				<p>Aantal openstaande issues: 13</p>
 				<p>Aantal commits: 14</p>
 				<p>Aantal commits sinds laatste login: 3</p>
-				<p><a href="{{student.github}}"TARGET="_blank">Link Github</a></p>
+				<p><a href="{{student.github}}"TARGET="_blank">Link Repo</a></p>
 			</div>
 		</div>

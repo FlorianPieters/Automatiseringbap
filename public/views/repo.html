@@ -1,10 +1,8 @@
 	<a href="#overzicht"><input type="submit" value="Overzicht" id="overzichtbtn"></a>
-		<a href="#info"><input type="submit" value="Info Student" id="infobtn" ></a>
+		<a href="#info/{{x.naam}}"><input type="submit" value="Info Student" id="infobtn" ></a>
 
 		<select id="selectname">
- 			<option value="volvo">Florian Pieters</option>
-			<option value="saab">Kilian Pauwels</option>
- 			<option value="mercedes">...</option>
+ 			<option value="volvo" ng-repeat="x in data.studenten">{{x.naam}}</option>
 		</select>
 		<div id="content">
 			<div id="reponav">
