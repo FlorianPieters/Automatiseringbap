@@ -59,7 +59,7 @@ app.config(function($routeProvider, $authProvider){
 
 });
 
-app.service("dataService", ["$firebaseArray", function($firebaseArray,filterFilter){
+app.service("dataService", ["$firebaseArray", "filterFilter", function($firebaseArray,filterFilter){
 	var studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
 	studenten = $firebaseArray(ref);
@@ -106,6 +106,7 @@ app.controller("infoController", function($scope, $firebaseArray, $routeParams, 
 	$scope.title ="info";
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+	
 });
 
 app.controller("repoController", function($scope,$http){
