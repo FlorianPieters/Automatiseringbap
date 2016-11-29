@@ -7,7 +7,7 @@
 		<div id="content">
 			<div id="reponav">
 				<a href="#readme"><input type="submit" value="Read Me" id="alleCommitsbtn"></a>
-				<a href="#commits"><input type="submit" value="Alle commits" id="alleCommitsbtn"></a>
+				<a href="#commits/{{student.naam}}"><input type="submit" value="Alle commits" id="alleCommitsbtn"></a>
 				<a href="#issues"><input type="submit" value="Issues" id="issuebtn" ></a>
 				<input type="submit" value="scriptie" id="scriptiebtn" onclick="window.location.href='repo.html'" >
 				<input type="submit" value="Laatste logentry" id="logbtn" onclick="window.location.href='repo.html'" >
@@ -15,7 +15,7 @@
 				<a href="#addIssues"><input type="submit" value="Add issue" id="addissuebtn"></a>
 			</div>
 			<div id="repo">
-				<p id="repotext">Hier komen de issues, commits of scripties of laatste log entry</p>
+				<p id="repotext">Hier komen de issues, commits of scripties of laatste log entry {{student.github }}</p>
 			</div>
 
 

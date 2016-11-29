@@ -33,7 +33,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "infoController"
 		})
 
-		.when("/commits", {
+		.when("/commits/:studentNaam", {
 			templateUrl : "views/commits.html",
 			controller : "commitController"
 		})
@@ -43,7 +43,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "issuesController"
 		})
 
-		.when("/repo", {
+		.when("/repo/:studentNaam", {
 			templateUrl :"views/repo.html",
 			controller : "repoController"
 		})
@@ -110,21 +110,28 @@ app.controller("infoController", function($scope, $firebaseArray, $routeParams, 
 	$scope.data.studenten = dataService.getStudenten();
 });
 
-app.controller("repoController", function($scope,$http, dataService){
+app.controller("repoController", function($scope,$http, dataService, $routeParams){
 	$scope.title ="Repo";
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+
 });
 
-app.controller("commitController", function($scope,$http){
+app.controller("commitController", function($scope,$http, dataService, $routeParams){
 	$scope.title ="Commits";
 	$scope.commits = [];
 	$scope.message = [];
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
 var init = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/commits")
+	$http.get($scope.student.github +"/commits")
 	.success(function(results){
 		$scope.commits = results;
 		for(var i=0; i < $scope.commits.length; i++){
