@@ -8,7 +8,7 @@
 			<div id="reponav">
 				<a href="#readme"><input type="submit" value="Read Me" id="alleCommitsbtn"></a>
 				<a href="#commits/{{student.naam}}"><input type="submit" value="Alle commits" id="alleCommitsbtn"></a>
-				<a href="#issues"><input type="submit" value="Issues" id="issuebtn" ></a>
+				<a href="#issues/{{student.naam}}"><input type="submit" value="Issues" id="issuebtn" ></a>
 				<input type="submit" value="scriptie" id="scriptiebtn" onclick="window.location.href='repo.html'" >
 				<input type="submit" value="Laatste logentry" id="logbtn" onclick="window.location.href='repo.html'" >
 				<input type="submit" value="Add comment" id="commentbtn" onclick="window.location.href='repo.html'" >
@@ -17,12 +17,12 @@
 			<div id="repo">
 				<h3>{{title}}</h3>
 	
-	<ol>
-	<li ng-repeat="commit in commits">
-		<p>{{commit.commit.message}}</p>
-		<p>{{commit.author.login}}</p>
-	</li>
-	</ol>
+					<ol>
+					<li ng-repeat="commit in commits">
+						<p>{{commit.commit.message}}</p>
+						<p>{{commit.author.login}}</p>
+					</li>
+					</ol>
 			</div>
 
 

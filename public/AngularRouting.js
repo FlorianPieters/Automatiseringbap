@@ -38,7 +38,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "commitController"
 		})
 
-		.when("/issues", {
+		.when("/issues/:studentNaam", {
 			templateUrl :"views/issues.html",
 			controller : "issuesController"
 		})
@@ -153,11 +153,15 @@ var init = function(){
 	$scope.commitaantal = $scope.commits.length;
 });
 
-app.controller("issuesController", function($scope,$http){
+app.controller("issuesController", function($scope,$http, dataService, $routeParams){
 	$scope.title ="Issues";
 	$scope.issues = [];
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
+	$http.get($scope.student.github +"/issues")
 	.success(function(results){
 		$scope.issues = results;
 		console.log(results);
