@@ -85,7 +85,6 @@ app.service("dataService", ["$firebaseArray", "filterFilter", function($firebase
     };
 }]);
 
-
 app.controller("loginController", function($scope,$http, $auth){
 	$scope.title ="Home";
 	 $scope.authenticate = function(provider) {
@@ -99,6 +98,23 @@ app.controller("overzichtController", function($scope,$firebaseArray, dataServic
 	$scope.data.studenten = dataService.getStudenten();
 
 	console.log($scope.data.studenten);
+
+	this.student = {
+		bachelorproef: '',
+		bedrijf: '',
+		email: '',
+		github:'',
+		gsm: '',
+		naam:'',
+		promotor: ''
+	};
+
+	var ref = firebase.database().ref().child("studenten");
+
+	this.upload = function(){
+		console.log("user clicked upload", this.student);
+		var newDataPush = ref.push(this.student);
+	};
 	
 });
 

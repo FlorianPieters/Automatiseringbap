@@ -26,7 +26,24 @@
     </tr>
   </tbody>
 </table>
-  <p> {{test}}</p>
 <div id="activiteit"><div id="circle"></div><div id="circle1"></div><div id="circle2"></div></div>
+
+<div id="upload" ng-controller="overzichtController as ctrl">
+  <p>Add student to watchlist</p>
+  <form name="myForm" ng-submit="ctrl.upload()" class="addStudentForm">
+    <table>
+      <tr><td><p>Naam:</p></td><td><input type="text" ng-model="ctrl.student.naam"></td></tr>
+      <tr><td><p>Bachelorproef:</p></td><td><input type="text" ng-model="ctrl.student.bachelorproef"></td></tr>
+      <tr><td><p>Bedrijf:</p></td><td><input type="text" ng-model="ctrl.student.bedrijf"></td></tr>
+      <tr><td><p>E-mail:</p></td><td><input type="text" ng-model="ctrl.student.email"></td></tr>
+      <tr><td><p>Github:</p></td><td><input type="text" ng-model="ctrl.student.github"></td></tr>
+      <tr><td><p>gsm:</p></td><td><input type="text" ng-model="ctrl.student.gsm"></td></tr>
+      <tr><td><p>Promotor:</p></td><td><input type="text" ng-model="ctrl.student.promotor"></td></tr><br>
+      <tr><td></td><td><input type="submit" value="Upload"></td></tr></table>
+      </form>
 </div>
-	</div> 
+
+
+</div>
+
+ 
