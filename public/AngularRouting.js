@@ -119,12 +119,13 @@ app.controller("overzichtController", function($scope, $http, $firebaseArray, $r
 
 $scope.commits = [];
 commitcount = [];
+$scope.issue = [];
 
 
 var getcommit = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors/?access_token=accessToken")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
    		console.log(results[0].total);	
@@ -136,12 +137,10 @@ var getcommit = function(){
 	})
 }
 
-$scope.issue = [];
-
 var getissues = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues/?access_token=accessToken")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
 		$scope.issue = results.length;
