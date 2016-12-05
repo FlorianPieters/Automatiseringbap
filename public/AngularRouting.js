@@ -119,28 +119,22 @@ app.controller("overzichtController", function($scope, $http, $firebaseArray, $r
 
 $scope.commits = [];
 commitcount = [];
+
+
 var getcommit = function(){
 
 	console.log("init");
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
-		
-
-commitcount = results;
-$scope.commits = commitcount[0].total;
-
-
-   console.log(results[0].total);
-		
-
+   		console.log(results[0].total);	
+   		commitcount = results;
+		$scope.commits = commitcount[0].total;	
 	})
 	.error(function(error){
 		console.log(error);
 	})
 }
-
-getcommit();
 
 $scope.issue = [];
 
@@ -150,54 +144,15 @@ var getissues = function(){
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
-		
-
-
-
 		$scope.issue = results.length;
-   console.log(results.length);
-		
-
+  		console.log(results.length);
 	})
 	.error(function(error){
 		console.log(error);
 	})
 }
-
+getcommit();
 getissues();
-
-
-/*	$scope.commits = [];
-	$scope.message = [];
-	
-	
-	$scope.studen = [];
-	$scope.studen = dataService.getStudentAt($routeParams.studentNaam);
-
-var init = function(){
-
-	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/commits/?access_token=accessToken")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-		$scope.commits = results;
-		for(var i=0; i < $scope.commits.length; i++){
-			var current = $scope.commits[i].commit.message;
-			if($scope.message.indexOf(current)<0){
-				$scope.message.push(current);
-			}
-		}
-
-	})
-	.error(function(error){
-		console.log(error);
-	})
-}
-
-	init();
-	$scope.commitaantal = $scope.commits.length;
-
-	*/
 });
 
 app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService){
