@@ -135,7 +135,9 @@ var getcommit = function(){
 	.error(function(error){
 		console.log(error);
 	})
-}
+	 
+	
+};
 
 var getissues = function(){
 
@@ -227,7 +229,7 @@ app.controller("readmeController", function($scope,$http){
 	$scope.title = "Readme";
 	$scope.readme = [];
 
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/contents/README.md?ref=master")
+	$http.get("https://raw.githubusercontent.com/FlorianPieters/Automatiseringbap/master/README.md")
 	.success(function(results){
 		console.log(results);
 		$scope.readme = results;
