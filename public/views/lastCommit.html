@@ -1,0 +1,20 @@
+<div class="container">
+	<h1>{{title}}</h1>
+	
+	<div>
+		<p>Titel: {{commitTitle}}</p>
+		<p>Datum: {{commitDate}}</p>
+		<p>toevoeging: {{commitA}}</p>
+		<p>Verwijderde lijnen {{commitR}}</p>
+		<p>totaal {{commitT}}</p>
+		<a href="{{commitUrl}}">{{commitUrl}}</a>
+
+		<form name="myForm" ng-submit="ctrl.upload()" class="addArtistForm">
+			<table>
+				
+			<tr><td><p>Body:</p></td><td> <input type="text" ng-model="ctrl.comment.body"></td></tr>
+			<tr><td></td><td><input type="submit" value="comment" ng-click="commentcommit"></td></tr></table>
+		</form>
+	</div>
+
+</div>

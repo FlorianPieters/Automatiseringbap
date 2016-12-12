@@ -18,7 +18,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "overzichtController"
 		})
 
-		.when("/addIssue", {
+		.when("/addIssue/:studentNaam", {
 			templateUrl : "views/addIssue.html",
 			controller : "addIssueController"
 		})
@@ -41,6 +41,11 @@ app.config(function($routeProvider, $authProvider){
 		.when("/issues/:studentNaam", {
 			templateUrl :"views/issues.html",
 			controller : "issuesController"
+		})
+
+		.when("/lastCommit/:studentNaam", {
+			templateUrl :"views/lastCommit.html",
+			controller : "lastCommitController"
 		})
 
 		.when("/repo/:studentNaam", {
@@ -102,7 +107,7 @@ app.controller("overzichtController", function($scope, $http, $firebaseArray, $r
 	$scope.data.studenten = dataService.getStudenten();
 
 	console.log($scope.data.studenten);
-	console.log($scope.data.studenten[0]);
+	//console.log($scope.data.studenten[0]);
 //	console.log(accestoken)
 
 	this.student = {
@@ -145,10 +150,10 @@ $scope.issue = [];
 var getcommit = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/contributors")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
-   	//	console.log(results[0].total);	
+   		console.log(results);	
    		commitcount = results;
 		$scope.commits = commitcount[0].total;	
 	})
@@ -162,7 +167,7 @@ var getcommit = function(){
 var getissues = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
 		$scope.issue = results.length;
@@ -261,15 +266,48 @@ app.controller("readmeController", function($scope,$http){
 
 app.controller("addIssueController", function($scope,$http){
 
-	this.issue = {
+/*	this.issue = {
+  "title": "Found a bug",
+  "body": "I'm having a problem with this.",
+  "assignee": "octocat",
+  "assignees": [
+    {
+      "login": "octocat",
+      "id": 1,
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/octocat",
+      "html_url": "https://github.com/octocat",
+      "followers_url": "https://api.github.com/users/octocat/followers",
+      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+      "organizations_url": "https://api.github.com/users/octocat/orgs",
+      "repos_url": "https://api.github.com/users/octocat/repos",
+      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/octocat/received_events",
+      "type": "User",
+      "site_admin": false
+    }
+  ],
+  "milestone": 1,
+  "labels": [
+    "bug"
+  ]
+};*/
+
+		this.issue = {
 		title: '',
 		body: ''
 	};
 
 
+
+
 	this.upload = function(){
 		console.log("user clicked upload", this.issue);
-	$http.post("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues?title={{issue.title}}&body={{issue.body}}")
+	$http.post("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues?title={{issue.title}}&body={{issue.body}}")
 	.success(function(results){
 		console.log(results.status);
 	})
@@ -278,4 +316,108 @@ app.controller("addIssueController", function($scope,$http){
 	});
 	
 	}
+});
+
+app.controller("lastCommitController", function($scope,$http , dataService, $routeParams){
+	$scope.title = "Laatste Commit";
+	$scope.commitTitle = "" ;
+	$scope.commitDate ="";
+	$scope.commitA = "";
+	$scope.commitR = "";
+	$scope.commitT = "";
+	$scope.commitUrl = "";
+	
+	var lastSha ="";
+
+var getLastSha = function(){
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits")
+	.success(function(results){
+		//$scope.commits = results;
+		
+		
+
+		//console.log(results);
+	
+		lastSha = results[0].sha;
+		//console.log(lastSha);
+
+	})
+	.error(function(error){
+		console.log(error);
+	})
+}
+
+var getLastCommit = function(){
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits/913258dd98e8f86f5320971d6cdf8b794d0a23e8")
+	.success(function(results){
+		//$scope.commits = results;
+		
+		
+		console.log(results);
+		console.log(results.commit.message);
+		$scope.commitTitle = results.commit.message;
+		console.log(results.commit.author.date);
+		$scope.commitDate =results.commit.author.date;
+		$scope.commitA = results.stats.additions;
+		$scope.commitR = results.stats.deletions;
+		$scope.commitT = results.stats.total;
+		$scope.commitUrl = results.html_url;
+		console.log(results.html_url);
+
+
+		
+
+	})
+	.error(function(error){
+		console.log(error);
+	})
+}
+
+var weekCommit = function(){
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/code_frequency")
+	.success(function(results){
+		
+		
+		console.log(results)
+		;
+
+	})
+	.error(function(error){
+		console.log(error);
+	})
+}
+
+
+	getLastSha();
+	getLastCommit();
+	weekCommit();
+
+//	$scope.commitaantal = $scope.commits.length;
+
+	this.comment = {
+		
+		body: ''
+	};
+
+var commentcommit = function(){
+
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits/913258dd98e8f86f5320971d6cdf8b794d0a23e8/comments?body={{comment.body}}")
+	.success(function(results){
+		//$scope.commits = results;
+	
+
+	
+		
+
+	})
+	.error(function(error){
+		console.log(error);
+	})
+}
+
+
+
 });
