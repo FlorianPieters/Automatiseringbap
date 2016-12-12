@@ -5,8 +5,10 @@ var https = require('https');
 
 //git
 var qs = require('querystring');
-var accessToken='';
-var apiAccesUrl = 'https://api.github.com/user?access_token=';
+//accessToken='';
+//var aToken=[
+//{aToken: ""}];
+//var apiAccesUrl = 'https://api.github.com/user?access_token=';
 
 
 
@@ -36,7 +38,7 @@ GITHUB_SECRET: process.env.GITHUB_SECRET || '93ae0ea520085b39e117308d2f856f037de
 };
 
 //
-app.post('/auth/github', function(req, res) 
+/*app.post('/auth/github', function(req, res) 
 {
   var accessTokenUrl = 'https://github.com/login/oauth/access_token';
   var userApiUrl = 'https://api.github.com/user';
@@ -48,7 +50,7 @@ app.post('/auth/github', function(req, res)
   };
 
   // Step 1. Exchange authorization code for access token.
-  request.get({ url: accessTokenUrl, qs: params }, function(err, response/*, accessToken*/) 
+  request.get({ url: accessTokenUrl, qs: params }, function(err, response, accessToken) 
   {
     accessToken = qs.parse(accessToken);
 
@@ -76,13 +78,23 @@ app.post('/auth/github', function(req, res)
         };
       }); 
       });
-    });
+    });*/
 
-apiAccesUrl+=accessToken;
+//apiAccesUrl+=accessToken;
+//aToken[0] = accessToken;
+
+
+
+/*app.get('/gettoken', function(req,res){
+  res.json(aToken);
+  
+ 
+})*/
 
 //app.get({ url: apiAccesUrl})
 
 // Fire it up!
 app.listen(3000);
 console.log('Listening on port 3000');
-console.log(accessToken);
+//console.log(aToken[0]);
+

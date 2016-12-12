@@ -54,7 +54,7 @@ app.config(function($routeProvider, $authProvider){
 
 		$authProvider.github({
       	clientId: 'db2e9e71839b2e01e776',
-      	  redirectUri: 'http://localhost:3000/index.html#/overzicht'
+      	redirectUri: 'http://localhost:3000/index.html#/overzicht'
    		});
 
 });
@@ -89,15 +89,21 @@ app.controller("loginController", function($scope,$http, $auth){
 	$scope.title ="Home";
 	 $scope.authenticate = function(provider) {
      	$auth.authenticate(provider);
+
     };
 });
 
-app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService){
+//var accestoken{} = $auth.getToken();
+
+
+app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService, $rootScope){
 	$scope.title ="overzicht";
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
 
 	console.log($scope.data.studenten);
+	console.log($scope.data.studenten[0]);
+//	console.log(accestoken)
 
 	this.student = {
 		bachelorproef: '',
@@ -121,14 +127,28 @@ $scope.commits = [];
 commitcount = [];
 $scope.issue = [];
 
+/*$http.get("https://api.github.com/authorizations")
+	//$http.get($scope.studen.github +"/commits")
+	.success(function(results){
+   		console.log(results);	
+	})
+	.error(function(error){
+		console.log(error);
+	})*/
+
+ /*$http.get('http://localhost:3000/gettoken').then(function(responseData){
+        $rootScope.response = responseData.data;
+        $rootScope.aToken = $rootScope.response[0].aToken
+        console.log($rootScope.aToken);
+})*/
 
 var getcommit = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors/?access_token=accessToken")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/stats/contributors")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
-   		console.log(results[0].total);	
+   	//	console.log(results[0].total);	
    		commitcount = results;
 		$scope.commits = commitcount[0].total;	
 	})
@@ -142,11 +162,11 @@ var getcommit = function(){
 var getissues = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues/?access_token=accessToken")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbab/issues")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
 		$scope.issue = results.length;
-  		console.log(results.length);
+  	//	console.log(results.length);
 	})
 	.error(function(error){
 		console.log(error);
