@@ -23,7 +23,7 @@ app.config(function($routeProvider, $authProvider){
 			controller : "addIssueController"
 		})
 
-		.when("/readme", {
+		.when("/readme/:studentNaam", {
 			templateUrl : "views/readme.html",
 			controller : "readmeController"
 		})
@@ -250,11 +250,16 @@ app.controller("issuesController", function($scope,$http, dataService, $routePar
 	});
 });
 
-app.controller("readmeController", function($scope,$http){
+app.controller("readmeController", function($scope,$http, dataService, $routeParams){
 	$scope.title = "Readme";
 	$scope.readme = [];
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+	console.log($scope.student);
 
-	$http.get("https://raw.githubusercontent.com/FlorianPieters/Automatiseringbap/master/README.md")
+	$http.get("https://raw.githubusercontent.com/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/master/README.md")
 	.success(function(results){
 		console.log(results);
 		$scope.readme = results;
