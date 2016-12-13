@@ -64,6 +64,8 @@ app.config(function($routeProvider, $authProvider){
 
 });
 
+//$scope.token = "452c67b46a514247c4844b4b7fc306850ac9752e";
+
 app.service("dataService", ["$firebaseArray", "filterFilter", function($firebaseArray,filterFilter){
 	var studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
@@ -210,7 +212,7 @@ app.controller("commitController", function($scope,$http, dataService, $routePar
 var init = function(){
 
 	console.log("init");
-	$http.get($scope.student.github +"/commits")
+	$http.get($scope.student.github +"/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		$scope.commits = results;
 		for(var i=0; i < $scope.commits.length; i++){
@@ -269,44 +271,16 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 	});
 });
 
-app.controller("addIssueController", function($scope,$http){
-
-/*	this.issue = {
-  "title": "Found a bug",
-  "body": "I'm having a problem with this.",
-  "assignee": "octocat",
-  "assignees": [
-    {
-      "login": "octocat",
-      "id": 1,
-      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/octocat",
-      "html_url": "https://github.com/octocat",
-      "followers_url": "https://api.github.com/users/octocat/followers",
-      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
-      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
-      "organizations_url": "https://api.github.com/users/octocat/orgs",
-      "repos_url": "https://api.github.com/users/octocat/repos",
-      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/octocat/received_events",
-      "type": "User",
-      "site_admin": false
-    }
-  ],
-  "milestone": 1,
-  "labels": [
-    "bug"
-  ]
-};*/
+app.controller("addIssueController", function($scope,$http, dataService, $routeParams){
 
 		this.issue = {
 		title: '',
 		body: ''
 	};
-
+	$scope.data= {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
 
 
@@ -331,8 +305,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.commitR = "";
 	$scope.commitT = "";
 	$scope.commitUrl = "";
-	
-	var lastSha ="";
+	$scope.lastSha = "";
 
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
@@ -350,16 +323,24 @@ var getLastSha = function(){
 		//console.log(results);
 	
 		$scope.lastSha = results[0].sha;
+		console.log($scope.lastSha + "in getLastSha");
 		//console.log(lastSha);
 
 	})
 	.error(function(error){
 		console.log(error);
 	})
+
 }
+
+console.log($scope.lastSha + "buiten alles");
+//getLastSha();
+
 
 var getLastCommit = function(){
 
+	getLastSha();
+	console.log("in getlastcommit" + $scope.lastSha);
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha)
 	.success(function(results){
 		//$scope.commits = results;
@@ -385,6 +366,7 @@ var getLastCommit = function(){
 	})
 }
 
+
 var weekCommit = function(){
 
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/code_frequency")
@@ -401,6 +383,7 @@ var weekCommit = function(){
 }
 
 
+	
 	getLastSha();
 	getLastCommit();
 	weekCommit();
