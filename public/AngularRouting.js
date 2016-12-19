@@ -64,7 +64,6 @@ app.config(function($routeProvider, $authProvider){
 
 });
 
-//$scope.token = "452c67b46a514247c4844b4b7fc306850ac9752e";
 
 app.service("dataService", ["$firebaseArray", "filterFilter", function($firebaseArray,filterFilter){
 	var studenten = [];
@@ -100,19 +99,145 @@ app.controller("loginController", function($scope,$http, $auth){
     };
 });
 
+
+
+app.service("dataService2", ["$firebaseArray", "filterFilter","$q", function($firebaseArray,filterFilter,$q){
+	var studenten = [];
+	var ref  = firebase.database().ref().child("studenten");
+	studenten = $firebaseArray(ref);
+	//console.log(studenten);
+	//console.log("in dataservice");
+	
+	var alleStudenten = [];
+	
+
+	
+
+    this.getStudenten = function(){
+    	 var deferred = $q.defer();
+
+    	var ref  = firebase.database().ref().child("studenten");
+    	var st = $firebaseArray(ref)
+    	
+
+		st.$loaded()
+    		.then(function(data){
+      			 // angular.forEach(data, function(user) {
+      			 //	console.log(data);
+        	deferred.resolve(data);
+			//console.log(user)
+           		// alleStudenten.push(user);
+      //  })
+
+        
+    });
+    	
+		return   deferred.promise;//;
+	
+    	//return alleStudenten;
+    };
+    this.getStudentAt = function(_naam){
+    	this.getStudenten();
+    	return filterFilter(alleStudenten, {
+    		naam: _naam
+    	})[0];
+    };
+}]);
+
+app.controller("loginController", function($scope,$http, $auth){
+	$scope.title ="Home";
+	 $scope.authenticate = function(provider) {
+     	$auth.authenticate(provider);
+
+
+     	$http.get("https://github.com/login/oauth/authorize")
+	.success(function(results){
+   		console.log(results);	
+
+	})
+	.error(function(error){
+		console.log(error);
+	})
+
+    };
+});
+
 //var accestoken{} = $auth.getToken();
 
 
-app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService, $rootScope){
+app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService2, $rootScope){
 	$scope.title ="overzicht";
+
+	//$scope.data.studenten = dataService.getStudenten();
+
+//console.log(dataService.getStudenten());
+
+$scope.gitNaam = "";
+$scope.gitRepo = "";
+
+$scope.commits = [];
+commitcount = [];
+$scope.issue = [];
+
+
+var promise = dataService2.getStudenten();
+
+promise.then(function(data){
+
+
+
+
+	console.log("in promise");
+	for(var i=0; i<data.length;i++){
+
+$scope.gitNaam = data[i].gitUserName;
+//console.log($scope.gitNaam);
+$scope.gitRepo = data[i].gitRepo;
+
+
+//$scope.data[i].gitUserName;
+//
+		//console.log($scope.data[i].gitUserName);
+		//console.log($scope.data[i].gitRepo);
+		$http.get("https://api.github.com/repos/" + $scope.gitNaam + "/" + $scope.gitRepo + "/issues?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
+	//$http.get($scope.studen.github +"/commits")
+	.success(function(results){
+		$scope.issue = results.length;
+  		console.log(results.length);
+	})
+	.error(function(error){
+		console.log(error);
+	})
+
+	$http.get("https://api.github.com/repos/" + $scope.gitNaam + "/" + $scope.gitRepo + "/stats/contributors?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
+	//$http.get($scope.studen.github +"/commits")
+	.success(function(results){
+   		console.log(results);	
+   		commitcount = results;
+		$scope.commits = commitcount[0].total;	
+		console.log($scope.commits);
+	})
+	.error(function(error){
+		console.log(error);
+	})
+	 
+
+		//console.log(data[i]);
+		//console.log(data[i].gitUserName);
+		//console.log(data[i].gitRepo);
+
+
+	}
+
+
+
+
+
+$scope.studenten = [] ;
+$scope.studenten = data;
+//console.log($scope.studenten);
 	$scope.data = {};
-	$scope.data.studenten = dataService.getStudenten();
-
-	console.log($scope.data.studenten);
-	//console.log($scope.data.studenten[0]);
-//	console.log(accestoken)
-
-	this.student = {
+		this.student = {
 		bachelorproef: '',
 		bedrijf: '',
 		email: '',
@@ -128,26 +253,18 @@ app.controller("overzichtController", function($scope, $http, $firebaseArray, $r
 		console.log("user clicked upload", this.student);
 		var newDataPush = ref.push(this.student);
 	};
+});
+
+//console.log("testing123")
+	//console.log($scope.data.studenten);
+	
+//	console.log(accestoken)
 
 
-$scope.commits = [];
-commitcount = [];
-$scope.issue = [];
 
-/*$http.get("https://api.github.com/authorizations")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-   		console.log(results);	
-	})
-	.error(function(error){
-		console.log(error);
-	})*/
 
- /*$http.get('http://localhost:3000/gettoken').then(function(responseData){
-        $rootScope.response = responseData.data;
-        $rootScope.aToken = $rootScope.response[0].aToken
-        console.log($rootScope.aToken);
-})*/
+
+
 
 var getcommit = function(){
 
@@ -179,8 +296,8 @@ var getissues = function(){
 		console.log(error);
 	})
 }
-getcommit();
-getissues();
+//getcommit();
+//getissues();
 });
 
 app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService){
@@ -189,6 +306,9 @@ app.controller("infoController", function($scope, $firebaseArray, $routeParams, 
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
+
+
+
 });
 
 app.controller("repoController", function($scope,$http, dataService, $routeParams){
@@ -212,7 +332,7 @@ app.controller("commitController", function($scope,$http, dataService, $routePar
 var init = function(){
 
 	console.log("init");
-	$http.get($scope.student.github +"/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
+	$http.get($scope.student.github +"/commits")
 	.success(function(results){
 		$scope.commits = results;
 		for(var i=0; i < $scope.commits.length; i++){
@@ -271,16 +391,44 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 	});
 });
 
-app.controller("addIssueController", function($scope,$http, dataService, $routeParams){
+app.controller("addIssueController", function($scope,$http){
+
+/*	this.issue = {
+  "title": "Found a bug",
+  "body": "I'm having a problem with this.",
+  "assignee": "octocat",
+  "assignees": [
+    {
+      "login": "octocat",
+      "id": 1,
+      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/octocat",
+      "html_url": "https://github.com/octocat",
+      "followers_url": "https://api.github.com/users/octocat/followers",
+      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+      "organizations_url": "https://api.github.com/users/octocat/orgs",
+      "repos_url": "https://api.github.com/users/octocat/repos",
+      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/octocat/received_events",
+      "type": "User",
+      "site_admin": false
+    }
+  ],
+  "milestone": 1,
+  "labels": [
+    "bug"
+  ]
+};*/
 
 		this.issue = {
 		title: '',
 		body: ''
 	};
-	$scope.data= {};
-	$scope.data.studenten = dataService.getStudenten();
-	$scope.student = [];
-	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+
 
 
 
@@ -305,7 +453,8 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.commitR = "";
 	$scope.commitT = "";
 	$scope.commitUrl = "";
-	$scope.lastSha = "";
+	
+	var lastSha ="";
 
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
@@ -314,7 +463,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 
 var getLastSha = function(){
 
-	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/"+ $scope.student.gitRepo +"/commits")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits")
 	.success(function(results){
 		//$scope.commits = results;
 		
@@ -323,29 +472,25 @@ var getLastSha = function(){
 		//console.log(results);
 	
 		$scope.lastSha = results[0].sha;
-		console.log($scope.lastSha + "in getLastSha");
-		//console.log(lastSha);
+		console.log(lastSha);
+
+		console.log("TESTING");
+		console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
+		getLastCommit();
 
 	})
 	.error(function(error){
 		console.log(error);
 	})
-
 }
-
-console.log($scope.lastSha + "buiten alles");
-//getLastSha();
-
 
 var getLastCommit = function(){
 
-	getLastSha();
-	console.log("in getlastcommit" + $scope.lastSha);
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha)
 	.success(function(results){
 		//$scope.commits = results;
 		
-		
+		console.log("in last commit");
 		console.log(results);
 		console.log(results.commit.message);
 		$scope.commitTitle = results.commit.message;
@@ -366,12 +511,19 @@ var getLastCommit = function(){
 	})
 }
 
+var laatsteWeek = "";
+$scope.activity =[];
 
 var weekCommit = function(){
 
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/code_frequency")
 	.success(function(results){
-		
+		laatsteWeek = results.length -1;
+		console.log(results);
+		//console.log(results[laatsteWeek]);
+		$scope.activity = results[laatsteWeek];
+		console.log($scope.activity);
+
 		
 		console.log(results)
 		;
@@ -383,10 +535,9 @@ var weekCommit = function(){
 }
 
 
-	
 	getLastSha();
-	getLastCommit();
-	weekCommit();
+	//getLastCommit();
+	//weekCommit();
 
 //	$scope.commitaantal = $scope.commits.length;
 

@@ -14,12 +14,12 @@
   <tbody>
     
     
-    <tr ng-repeat="x in data.studenten" >
+    <tr ng-repeat="x in studenten" >
 
       <th scope="row">{{x.$id}}</th>
       <td ><a href="#info/{{x.naam}}" >{{x.naam}} </a></td>
-      <td> Automatisering</td>
-      <td>{{issue}}</td>
+      <td> {{x.bachelorproef}}</td>
+      <td  >{{issue}}</td>
       <td >{{commits}}</td>
       <td><a href="url">Laatste stand repo</a></td>
       <td></td>
