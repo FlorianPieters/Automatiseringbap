@@ -168,6 +168,7 @@ app.controller("loginController", function($scope,$http, $auth){
 app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService2, $rootScope){
 	$scope.title ="overzicht";
 
+	//$scope.data = {};
 	//$scope.data.studenten = dataService.getStudenten();
 
 //console.log(dataService.getStudenten());
@@ -228,15 +229,17 @@ $scope.gitRepo = data[i].gitRepo;
 
 
 	}
+	$scope.studenten = [] ;
+	$scope.studenten = data;
+	});
 
 
 
 
 
-$scope.studenten = [] ;
-$scope.studenten = data;
+/*$scope.studenten = [] ;
+$scope.studenten = data;*/
 //console.log($scope.studenten);
-	$scope.data = {};
 		this.student = {
 		bachelorproef: '',
 		bedrijf: '',
@@ -253,7 +256,7 @@ $scope.studenten = data;
 		console.log("user clicked upload", this.student);
 		var newDataPush = ref.push(this.student);
 	};
-});
+
 
 //console.log("testing123")
 	//console.log($scope.data.studenten);
@@ -300,12 +303,25 @@ var getissues = function(){
 //getissues();
 });
 
-app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService){
+app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService2){
 	$scope.title ="info";
+	/*$scope.data = {};
+	$scope.data.studenten = dataService2.getStudenten();
 	$scope.student = [];
-	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
-	$scope.data = {};
-	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = dataService2.getStudentAt($routeParams.studentNaam);
+	console.log($scope.student);*/
+
+	var promise = dataService2.getStudenten();
+
+	promise.then(function(data){
+		console.log("in promise");
+		$scope.studenten = [];
+		$scope.studenten = data;
+		$scope.student = [];
+		$scope.student = dataService2.getStudentAt($routeParams.studentNaam);
+		console.log($scope.student);
+	});
+
 
 
 
@@ -393,36 +409,7 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 
 app.controller("addIssueController", function($scope,$http){
 
-/*	this.issue = {
-  "title": "Found a bug",
-  "body": "I'm having a problem with this.",
-  "assignee": "octocat",
-  "assignees": [
-    {
-      "login": "octocat",
-      "id": 1,
-      "avatar_url": "https://github.com/images/error/octocat_happy.gif",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/octocat",
-      "html_url": "https://github.com/octocat",
-      "followers_url": "https://api.github.com/users/octocat/followers",
-      "following_url": "https://api.github.com/users/octocat/following{/other_user}",
-      "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
-      "organizations_url": "https://api.github.com/users/octocat/orgs",
-      "repos_url": "https://api.github.com/users/octocat/repos",
-      "events_url": "https://api.github.com/users/octocat/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/octocat/received_events",
-      "type": "User",
-      "site_admin": false
-    }
-  ],
-  "milestone": 1,
-  "labels": [
-    "bug"
-  ]
-};*/
+
 
 		this.issue = {
 		title: '',
