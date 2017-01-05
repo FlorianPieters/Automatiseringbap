@@ -444,6 +444,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.title = "Laatste Commit";
 	$scope.commitTitle = "" ;
 	$scope.commitDate ="";
+	$scope.gitDate ="";
 	$scope.commitA = "";
 	$scope.commitR = "";
 	$scope.commitT = "";
@@ -455,11 +456,14 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
-	console.log($scope.student.gitUserName);
+	//console.log($scope.student.gitUserName);
+
+	
+
 
 var getLastSha = function(){
 
-	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits")
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		//$scope.commits = results;
 		
@@ -475,6 +479,9 @@ var getLastSha = function(){
 		//console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
 		//getLastCommit();
 
+
+		getLastCommit();
+
 	})
 	.error(function(error){
 		console.log(error);
@@ -483,29 +490,106 @@ var getLastSha = function(){
 
 var getLastCommit = function(){
 
-	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha)
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha + "?access_token=452c67b46a514247c4844b4b7fc306850ac9752e" )
 	.success(function(results){
 		//$scope.commits = results;
 		
+
+		//$scope.githubDateFormat = results.commit.author.date;
+		//console.log(githubDateFormat);
+		 
+
+		
+		console.log($scope.commitDate);
+
 		console.log("in last commit");
 		console.log(results);
 		console.log(results.commit.message);
 		$scope.commitTitle = results.commit.message;
 		console.log(results.commit.author.date);
-		$scope.commitDate =results.commit.author.date;
+		$scope.gitDate =results.commit.author.date;
 		$scope.commitA = results.stats.additions;
 		$scope.commitR = results.stats.deletions;
 		$scope.commitT = results.stats.total;
 		$scope.commitUrl = results.html_url;
 		console.log(results.html_url);
 
+		$scope.lastDate = $scope.gitDate.split("T");
+		$scope.commitDate = $scope.lastDate[0]; // -----> dees word bij datum afgedrukt dus moet wss worde opgeslage  :p
+		checkActivity();
 
-		
 
 	})
 	.error(function(error){
 		console.log(error);
 	})
+}
+
+var checkActivity = function(){
+	
+var date = new Date();
+	$scope.currentDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+	console.log($scope.currentDate); // huidige datum 2017-01-05 format
+	$scope.parseCurDate = $scope.currentDate.split("-");
+	$scope.curYear = parseInt($scope.parseCurDate[0]);
+	//console.log($scope.curYear);
+	$scope.curMonth = parseInt($scope.parseCurDate[1]);
+	//console.log($scope.curMonth);
+	$scope.curDay = parseInt($scope.parseCurDate[2]);
+	//console.log($scope.curDay);
+	
+
+	//console.log($scope.lastDate[0]); // dees is den datum bv. "2017-01-05"
+	$scope.parseLastDate = $scope.lastDate[0].split("-"); 	
+	console.log($scope.parseLastDate[0]); 
+	// array 2017,01,05
+	$scope.lastYear = parseInt($scope.parseLastDate[0]);
+	console.log($scope.lastYear);
+	$scope.lastMonth = $scope.parseLastDate[1];
+	console.log($scope.lastMonth);
+	$scope.lastDay = parseInt($scope.parseLastDate[2]);
+	console.log($scope.lastDay);
+	$scope.maxD = parseInt(7);
+	$scope.maxDay =  ($scope.lastDay + $scope.maxD);
+	//console.log($scope.maxDay);
+
+
+//$scope.dayDiffrence = "";
+//$scope.monthDays = "";
+
+
+
+
+	if ($scope.curMonth > $scope.lastMonth) {
+
+
+
+		if ($scope.lastMonth == 2){
+
+			$scope.monthDays = 28 - parseInt($scope.lastDay);
+		}
+		if ($scope.lastMonth == 4 || $scope.lastMonth == 6 || $scope.lastMonth == 9 || $scope.lastMonth == 11) {
+
+			$scope.monthDays = 30 - parseInt($scope.lastDay);
+
+		}
+		else {
+			$scope.monthDays = 31 - parseInt($scope.lastDay);
+		}
+
+			$scope.dayDiffrence = parseInt($scope.monthDays) + parseInt($scope.curDay);
+			console.log($scope.dayDiffrence);
+
+	}
+	else {
+		$scope.dayDiffrence = parseInt($scope.curDay) - parseInt($scope.lastDay);
+		console.log($scope.dayDiffrence);
+	}
+
+	
+		
+
+	
 }
 
 var laatsteWeek = "";
@@ -533,7 +617,7 @@ var weekCommit = function(){
 
 
 	getLastSha();
-	//getLastCommit();
+	
 	//weekCommit();
 
 //	$scope.commitaantal = $scope.commits.length;
