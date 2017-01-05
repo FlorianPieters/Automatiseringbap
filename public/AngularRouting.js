@@ -449,7 +449,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.commitT = "";
 	$scope.commitUrl = "";
 	
-	var lastSha ="";
+	$scope.lastSha ="";
 
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
@@ -458,7 +458,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 
 var getLastSha = function(){
 
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits")
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits")
 	.success(function(results){
 		//$scope.commits = results;
 		
@@ -467,11 +467,12 @@ var getLastSha = function(){
 		//console.log(results);
 	
 		$scope.lastSha = results[0].sha;
-		console.log(lastSha);
+		
+		console.log($scope.lastSha);
 
-		console.log("TESTING");
-		console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
-		getLastCommit();
+		//console.log("TESTING");
+		//console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
+		//getLastCommit();
 
 	})
 	.error(function(error){
