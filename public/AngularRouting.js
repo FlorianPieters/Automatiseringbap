@@ -455,6 +455,7 @@ app.controller("lastCommitController", function($scope,$http , dataService, $rou
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+	console.log($scope.student.gitUserName);
 
 var getLastSha = function(){
 
