@@ -165,15 +165,15 @@ app.controller("loginController", function($scope,$http, $auth){
 //var accestoken{} = $auth.getToken();
 
 
-app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService2, $rootScope){
+app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService, $rootScope){
 	$scope.title ="overzicht";
 
-	//$scope.data = {};
-	//$scope.data.studenten = dataService.getStudenten();
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
 
-//console.log(dataService.getStudenten());
 
-$scope.gitNaam = "";
+
+/*$scope.gitNaam = "";
 $scope.gitRepo = "";
 
 $scope.commits = [];
@@ -269,7 +269,7 @@ $scope.studenten = data;*/
 
 
 
-var getcommit = function(){
+/*var getcommit = function(){
 
 	console.log("init");
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/contributors")
@@ -300,30 +300,38 @@ var getissues = function(){
 	})
 }
 //getcommit();
-//getissues();
+//getissues();*/
 });
 
-app.controller("infoController", function($scope, $firebaseArray, $routeParams, dataService2){
+app.controller("infoController", function($scope, $http, $firebaseArray, $routeParams, dataService){
 	$scope.title ="info";
-	/*$scope.data = {};
-	$scope.data.studenten = dataService2.getStudenten();
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	console.log($scope.data.studenten);
 	$scope.student = [];
-	$scope.student = dataService2.getStudentAt($routeParams.studentNaam);
-	console.log($scope.student);*/
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+	console.log($scope.student);
+	$scope.commits = [];
+	$scope.issues = [];
 
-	var promise = dataService2.getStudenten();
 
-	promise.then(function(data){
-		console.log("in promise");
-		$scope.studenten = [];
-		$scope.studenten = data;
-		$scope.student = [];
-		$scope.student = dataService2.getStudentAt($routeParams.studentNaam);
-		console.log($scope.student);
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/commits")
+	.success(function(results){
+		$scope.commits = results;
+		console.log($scope.commits);
+		console.log($scope.commits.length);
+	})
+	.error(function(error){
+		console.log(error);
 	});
 
-
-
+	$http.get("http://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/issues")
+	.success(function(results){
+		$scope.issues = results;
+	})
+	.error(function(error){
+		console.log(error);
+	});
 
 });
 

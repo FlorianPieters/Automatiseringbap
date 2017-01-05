@@ -5,8 +5,6 @@
       <th>#</th>
       <th><strong>Name </strong></th>
       <th><strong>Bachelorproef</strong></th>
-      <th><strong>Issues</strong></th>
-      <th><strong>Commits</strong></th>
       <th><strong>Laatste stand repo</strong></th>
       <th><strong>Activiteit</strong></th>
     </tr>
@@ -14,13 +12,11 @@
   <tbody>
     
     
-    <tr ng-repeat="x in studenten" >
+    <tr ng-repeat="x in data.studenten" >
 
       <th scope="row">{{x.$id}}</th>
       <td ><a href="#info/{{x.naam}}" >{{x.naam}} </a></td>
       <td> {{x.bachelorproef}}</td>
-      <td  >{{issue}}</td>
-      <td >{{commits}}</td>
       <td><a href="url">Laatste stand repo</a></td>
       <td></td>
     </tr>
