@@ -157,6 +157,7 @@ app.controller("loginController", function($scope,$http, $auth, $rootScope, $loc
 		console.log("submit");
 		for(var i= 0; i < $scope.users.length; i++ ){
 			if($scope.Username == $scope.users[i].username){
+				$rootScope.username = $scope.Username;
 				console.log("username checks out");
 				if($scope.password == $scope.users[i].password){
 					console.log("password checks out");
@@ -184,11 +185,29 @@ app.controller("registerController", function($scope, $http){
 	}
 });
 
-app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService, $rootScope){
+app.controller("overzichtController", function($scope, $rootScope, $http, $firebaseArray, $routeParams, dataService){
 	$scope.title ="overzicht";
 
 	$scope.data = {};
+	$scope.data.studenten = [];
 	$scope.data.studenten = dataService.getStudenten();
+	console.log($scope.data.studenten);
+	$scope.userStudenten = [];
+	console.log("voor de forloop");
+	
+		for(var i=0 ; i<$scope.data.studenten.length ; i++ ){
+			console.log($scope.data.studenten);
+		console.log("in de forloop");
+		console.log($scope.data.studenten[i].username);
+    	if($scope.data.studenten[i].username == $rootScope.username){
+    		$scope.userStudenten.push($scope.data.studenten[i]);
+    		console.log($scope.userStudenten);
+    	}
+    	}
+	
+		
+	
+
 
 
 
@@ -263,10 +282,12 @@ $scope.studenten = data;*/
 		bachelorproef: '',
 		bedrijf: '',
 		email: '',
-		github:'',
+		gitUserName:'',
+		gitRepo:'',
 		gsm: '',
 		naam:'',
-		promotor: ''
+		promotor: '',
+		username : $rootScope.username
 	};
 
 	var ref = firebase.database().ref().child("studenten");
