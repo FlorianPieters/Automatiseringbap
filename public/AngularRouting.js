@@ -25,6 +25,11 @@ app.config(function($routeProvider, $authProvider){
 			controller : "overzichtController"
 		})
 
+		.when("/register", {
+			templateUrl : "views/register.html",
+			controller : "registerController"
+		})
+
 		.when("/addIssue/:studentNaam", {
 			templateUrl : "views/addIssue.html",
 			controller : "addIssueController"
@@ -141,37 +146,43 @@ app.service("dataService2", ["$firebaseArray", "filterFilter","$q", function($fi
     };
 }]);
 
-app.controller("loginController", function($scope,$http, $auth, $rootScope, $location){
+app.controller("loginController", function($scope,$http, $auth, $rootScope, $location, $firebaseArray){
 	$scope.title ="Login";
+	var ref = firebase.database().ref().child("users");
+	$scope.users =[ ];
+	$scope.users = $firebaseArray(ref);
+	console.log($scope.users);
 
 	$scope.submit = function(){
 		console.log("submit");
-		
-		if($scope.Username == 'admin' && $scope.password == 'admin'){
-			$rootScope.loggedIn = true;
-			$location.path('/overzicht');
-		} else {
+		for(var i= 0; i < $scope.users.length; i++ ){
+			if($scope.Username == $scope.users[i].username){
+				console.log("username checks out");
+				if($scope.password == $scope.users[i].password){
+					console.log("password checks out");
+					$rootScope.loggedIn = true;
+					$location.path('/overzicht');
+				}
+			} 
+		}
+		if(!$rootScope.loggedIn){
 			alert("wrong credentials");
-		};
+		}
 	};
-	/* $scope.authenticate = function(provider) {
-     	$auth.authenticate(provider);
-
-
-     	$http.get("https://github.com/login/oauth/authorize")
-	.success(function(results){
-   		console.log(results);	
-
-	})
-	.error(function(error){
-		console.log(error);
-	})
-
-    };*/
 });
 
-//var accestoken{} = $auth.getToken();
-
+app.controller("registerController", function($scope, $http){
+	$scope.title = "Register";
+	this.user = {
+		username : "",
+		password : ""
+	};
+	var ref = firebase.database().ref().child("users");
+	$scope.submit = function(){
+		console.log("user clicked submit");
+		var newDataPush = ref.push(this.user);
+	}
+});
 
 app.controller("overzichtController", function($scope, $http, $firebaseArray, $routeParams, dataService, $rootScope){
 	$scope.title ="overzicht";
