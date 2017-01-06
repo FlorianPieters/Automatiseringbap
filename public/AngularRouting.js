@@ -14,6 +14,13 @@ app.config(function($routeProvider, $authProvider){
 		})
 
 		.when("/overzicht", {
+			resolve: {
+				"check": function($location, $rootScope){
+					if(!$rootScope.loggedIn) {
+						$location.path("/login");
+					} 
+				}
+			},
 			templateUrl : "views/overzicht.html",
 			controller : "overzichtController"
 		})
@@ -91,16 +98,6 @@ app.service("dataService", ["$firebaseArray", "filterFilter", function($firebase
     };
 }]);
 
-app.controller("loginController", function($scope,$http, $auth){
-	$scope.title ="Home";
-	 $scope.authenticate = function(provider) {
-     	$auth.authenticate(provider);
-
-    };
-});
-
-
-
 app.service("dataService2", ["$firebaseArray", "filterFilter","$q", function($firebaseArray,filterFilter,$q){
 	var studenten = [];
 	var ref  = firebase.database().ref().child("studenten");
@@ -144,9 +141,20 @@ app.service("dataService2", ["$firebaseArray", "filterFilter","$q", function($fi
     };
 }]);
 
-app.controller("loginController", function($scope,$http, $auth){
-	$scope.title ="Home";
-	 $scope.authenticate = function(provider) {
+app.controller("loginController", function($scope,$http, $auth, $rootScope, $location){
+	$scope.title ="Login";
+
+	$scope.submit = function(){
+		console.log("submit");
+		
+		if($scope.Username == 'admin' && $scope.password == 'admin'){
+			$rootScope.loggedIn = true;
+			$location.path('/overzicht');
+		} else {
+			alert("wrong credentials");
+		};
+	};
+	/* $scope.authenticate = function(provider) {
      	$auth.authenticate(provider);
 
 
@@ -159,7 +167,7 @@ app.controller("loginController", function($scope,$http, $auth){
 		console.log(error);
 	})
 
-    };
+    };*/
 });
 
 //var accestoken{} = $auth.getToken();
