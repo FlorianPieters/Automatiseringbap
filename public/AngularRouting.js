@@ -356,7 +356,7 @@ app.controller("commitController", function($scope,$http, dataService, $routePar
 var init = function(){
 
 	console.log("init");
-	$http.get($scope.student.github +"/commits")
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/commits")
 	.success(function(results){
 		$scope.commits = results;
 		for(var i=0; i < $scope.commits.length; i++){
@@ -386,7 +386,7 @@ app.controller("issuesController", function($scope,$http, dataService, $routePar
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
-	$http.get($scope.student.github +"/issues")
+	$http.get("http://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/issues")
 	.success(function(results){
 		$scope.issues = results;
 		console.log(results);
