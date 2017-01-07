@@ -474,14 +474,17 @@ var date = new Date();
 //$scope.dayDiffrence = "";
 //$scope.monthDays = "";
 //$scope.curMonth = 2;
+	if ($scope.curYear  > $scope.lastYear && $scope.lastMonth !== 12) {
+		$scope.dayDiffrence = "inactief";
+	}
 
 	if (($scope.curMonth -1)  > $scope.lastMonth) {
-		$scope.dayDiffrence = 50;
+		$scope.dayDiffrence = "inactief";
 		console.log($scope.dayDiffrence);
 	}
 
 	
-	if (($scope.curMonth -1)  == $scope.lastMonth) {
+	if ((($scope.curMonth -1)  == $scope.lastMonth) || (($scope.curYear -1) == $scope.lastYear && $scope.lastMonth == 12)) {
 
 
 
@@ -512,7 +515,7 @@ var date = new Date();
 		$scope.divColor = "green";
 		//divcolor groen
 	}
-	if ($scope.dayDiffrence >= 7) {
+	if ($scope.dayDiffrence >= 7 || $scope.dayDiffrence == "inactief") {
 		console.log("fail")
 		$scope.divColor = "red";
 		//divcolor rood
