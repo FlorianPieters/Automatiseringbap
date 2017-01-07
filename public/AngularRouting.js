@@ -1,4 +1,9 @@
-var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase"]);
+//require('angular');
+//require('angular-sanitize');
+//global.markdownit = require('markdown-it');
+//require('angular-markdown-it');
+
+var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase", /*"mdMarkdownIt"*//*"yaru22.directives.md"*/]);
 
 
 app.constant("db", {
@@ -468,7 +473,7 @@ var date = new Date();
 
 //$scope.dayDiffrence = "";
 //$scope.monthDays = "";
-$scope.curMonth = 2;
+//$scope.curMonth = 2;
 
 	if (($scope.curMonth -1)  > $scope.lastMonth) {
 		$scope.dayDiffrence = 50;
@@ -682,12 +687,6 @@ var getLastCommit = function(){
 	.success(function(results){
 		//$scope.commits = results;
 		
-
-		//$scope.githubDateFormat = results.commit.author.date;
-		//console.log(githubDateFormat);
-		 
-
-		
 		console.log($scope.commitDate);
 
 		console.log("in last commit");
@@ -703,8 +702,8 @@ var getLastCommit = function(){
 		console.log(results.html_url);
 
 		$scope.lastDate = $scope.gitDate.split("T");
-		$scope.commitDate = $scope.lastDate[0]; // -----> dees word bij datum afgedrukt dus moet wss worde opgeslage  :p
-		checkActivity();
+		$scope.commitDate = $scope.lastDate[0];
+
 
 
 	})
@@ -713,83 +712,6 @@ var getLastCommit = function(){
 	})
 }
 
-var checkActivity = function(){
-	
-var date = new Date();
-	$scope.currentDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-	console.log($scope.currentDate); // huidige datum 2017-01-05 format
-	$scope.parseCurDate = $scope.currentDate.split("-");
-	$scope.curYear = parseInt($scope.parseCurDate[0]);
-	//console.log($scope.curYear);
-	$scope.curMonth = parseInt($scope.parseCurDate[1]);
-	//console.log($scope.curMonth);
-	$scope.curDay = parseInt($scope.parseCurDate[2]);
-	//console.log($scope.curDay);
-	
-
-	//console.log($scope.lastDate[0]); // dees is den datum bv. "2017-01-05"
-	$scope.parseLastDate = $scope.lastDate[0].split("-"); 	
-	console.log($scope.parseLastDate[0]); 
-	// array 2017,01,05
-	$scope.lastYear = parseInt($scope.parseLastDate[0]);
-	console.log($scope.lastYear);
-	$scope.lastMonth = $scope.parseLastDate[1];
-	console.log($scope.lastMonth);
-	$scope.lastDay = parseInt($scope.parseLastDate[2]);
-	console.log($scope.lastDay);
-	$scope.maxD = parseInt(7);
-	$scope.maxDay =  ($scope.lastDay + $scope.maxD);
-	//console.log($scope.maxDay);
-
-
-//$scope.dayDiffrence = "";
-//$scope.monthDays = "";
-$scope.curMonth = 2;
-
-	if (($scope.curMonth -1)  > $scope.lastMonth) {
-		$scope.dayDiffrence = 50;
-		console.log($scope.dayDiffrence);
-	}
-
-	
-	if (($scope.curMonth -1)  == $scope.lastMonth) {
-
-
-
-		if ($scope.lastMonth == 2){
-
-			$scope.monthDays = 28 - parseInt($scope.lastDay);
-		}
-		if ($scope.lastMonth == 4 || $scope.lastMonth == 6 || $scope.lastMonth == 9 || $scope.lastMonth == 11) {
-
-			$scope.monthDays = 30 - parseInt($scope.lastDay);
-
-		}
-		else {
-			$scope.monthDays = 31 - parseInt($scope.lastDay);
-		}
-
-			$scope.dayDiffrence = parseInt($scope.monthDays) + parseInt($scope.curDay);
-			console.log($scope.dayDiffrence);
-
-	}
-	if ($scope.curMonth   == $scope.lastMonth) {
-		$scope.dayDiffrence = parseInt($scope.curDay) - parseInt($scope.lastDay);
-		console.log($scope.dayDiffrence);
-	}
-
-	if ($scope.dayDiffrence < 7) {
-		//divcolor groen
-	}
-	if ($scope.dayDiffrence >= 7) {
-		//divcolor rood
-	}
-		
-
-	
-}
-
-var laatsteWeek = "";
 $scope.activity =[];
 
 var weekCommit = function(){
