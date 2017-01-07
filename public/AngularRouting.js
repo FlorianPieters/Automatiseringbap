@@ -3,7 +3,7 @@
 //global.markdownit = require('markdown-it');
 //require('angular-markdown-it');
 
-var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase", /*"mdMarkdownIt"*//*"yaru22.directives.md"*/]);
+var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase", "mdMarkdownIt"/*"yaru22.directives.md"*/]);
 
 
 app.constant("db", {
@@ -591,7 +591,7 @@ app.controller("issuesController", function($scope,$http, dataService, $routePar
 
 app.controller("readmeController", function($scope,$http, dataService, $routeParams){
 	$scope.title = "Readme";
-	$scope.readme = [];
+	$scope.markdown = [];
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
@@ -601,7 +601,7 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 	$http.get("https://raw.githubusercontent.com/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/master/README.md")
 	.success(function(results){
 		console.log(results);
-		$scope.readme = results;
+		$scope.markdown = results;
 	})
 	.error(function(error){
 		console.log(error);
