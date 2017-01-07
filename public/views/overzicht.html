@@ -12,7 +12,7 @@
   <tbody>
     
     
-    <tr ng-repeat="x in data.studenten" >
+    <tr ng-repeat="x in userStudenten" >
 
       <th scope="row">{{x.$id}}</th>
       <td ><a href="#info/{{x.naam}}" >{{x.naam}} </a></td>
@@ -24,7 +24,7 @@
 </table>
 <div id="activiteit"><div id="circle"></div><div id="circle1"></div><div id="circle2"></div></div>
 
-<div id="upload" ng-controller="overzichtController as ctrl">
+<div id="upload" >
   <p>Add student to watchlist</p>
   <form name="myForm" ng-submit="ctrl.upload()" class="addStudentForm">
     <table>

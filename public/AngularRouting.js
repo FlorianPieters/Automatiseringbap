@@ -27,7 +27,8 @@ app.config(function($routeProvider, $authProvider){
 				}
 			},
 			templateUrl : "views/overzicht.html",
-			controller : "overzichtController"
+			controller : "overzichtController",
+			controllerAs : "ctrl"
 		})
 
 		.when("/register", {
@@ -88,17 +89,15 @@ app.service("dataService", ["$firebaseArray", "filterFilter", function($firebase
 	studenten = $firebaseArray(ref);
 
 	var alleStudenten = [];
-	studenten.$loaded()
-    .then(function(){
-        angular.forEach(studenten, function(user) {
-            alleStudenten.push(user);
-        })
-
-        
-    });
 
     this.getStudenten = function(){
-    	return alleStudenten;
+    		return studenten.$loaded()
+    			.then(function(){
+       				angular.forEach(studenten, function(user) {
+            			alleStudenten.push(user);
+        			})
+    				return alleStudenten;
+				});
     };
     this.getStudentAt = function(_naam){
     	this.getStudenten();
@@ -191,24 +190,25 @@ app.controller("registerController", function($scope, $http){
 });
 
 app.controller("overzichtController", function($scope, $rootScope, $http, $firebaseArray, $routeParams, dataService){
+	console.log("overzichtController");
 	$scope.title ="overzicht";
 
 	$scope.data = {};
 	$scope.data.studenten = [];
-	$scope.data.studenten = dataService.getStudenten();
-	console.log($scope.data.studenten);
 	$scope.userStudenten = [];
-	console.log("voor de forloop");
+
+	dataService.getStudenten().then(function(studenten){
+			console.log("Studenten received.");
+			for(var i=0 ; i<studenten.length ; i++ ){
+    			if(studenten[i].username == $rootScope.username){
+    				$scope.userStudenten.push(studenten[i]);
+    	}
+    	}
+	});
 	
-		for(var i=0 ; i<$scope.data.studenten.length ; i++ ){
-			console.log($scope.data.studenten);
-		console.log("in de forloop");
-		console.log($scope.data.studenten[i].username);
-    	if($scope.data.studenten[i].username == $rootScope.username){
-    		$scope.userStudenten.push($scope.data.studenten[i]);
-    		console.log($scope.userStudenten);
-    	}
-    	}
+	//console.log("voor de forloop");
+	
+		
 	
 		
 	
@@ -317,7 +317,7 @@ $scope.studenten = data;*/
 /*var getcommit = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/contributors")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/contributors?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
    		console.log(results);	
@@ -334,7 +334,7 @@ $scope.studenten = data;*/
 var getissues = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues")
+	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	//$http.get($scope.studen.github +"/commits")
 	.success(function(results){
 		$scope.issue = results.length;
@@ -552,7 +552,7 @@ app.controller("commitController", function($scope,$http, dataService, $routePar
 var init = function(){
 
 	console.log("init");
-	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/commits")
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo +"/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		$scope.commits = results;
 		for(var i=0; i < $scope.commits.length; i++){
@@ -581,8 +581,8 @@ app.controller("issuesController", function($scope,$http, dataService, $routePar
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
-
-	$http.get("http://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/issues")
+	console.log("issuescontroller");
+	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo +"/issues?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		$scope.issues = results;
 		console.log(results);
@@ -609,6 +609,11 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 	.error(function(error){
 		console.log(error);
 	});
+
+	var converter = new showdown.Converter(),
+		text = $scope.readme,
+		html = converter.makeHtml(text);
+
 });
 
 app.controller("addIssueController", function($scope,$http){
