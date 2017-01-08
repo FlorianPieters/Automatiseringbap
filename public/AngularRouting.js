@@ -38,12 +38,23 @@ app.config(function($routeProvider, $authProvider){
 
 		.when("/addIssue/:studentNaam", {
 			templateUrl : "views/addIssue.html",
-			controller : "addIssueController"
+			controller : "addIssueController",
+			controllerAs : "ctrl"
+		})
+
+		.when("/logs/:studentNaam", {
+			templateUrl : "views/logs.html",
+			controller : "logsController"
 		})
 
 		.when("/readme/:studentNaam", {
 			templateUrl : "views/readme.html",
 			controller : "readmeController"
+		})
+
+		.when("/scriptie/:studentNaam", {
+			templateUrl : "views/scriptie.html",
+			controller : "scriptieController"
 		})
 
 		.when("/info/:studentNaam", {
@@ -165,7 +176,9 @@ app.controller("loginController", function($scope,$http, $auth, $rootScope, $loc
 				console.log("username checks out");
 				if($scope.password == $scope.users[i].password){
 					console.log("password checks out");
+					$rootScope.password = $scope.password;
 					$rootScope.loggedIn = true;
+					//$http.defaults.headers.common.Authorization = 'Basic YmVlcDpib29w' + $rootScope.username + ":" + $rootScope.password;
 					$location.path('/overzicht');
 				}
 			} 
@@ -195,18 +208,18 @@ app.controller("overzichtController", function($scope, $rootScope, $http, $fireb
 
 	$scope.data = {};
 	$scope.data.studenten = [];
-	$scope.userStudenten = [];
+	$rootScope.userStudenten = [];
 
 	dataService.getStudenten().then(function(studenten){
 			console.log("Studenten received.");
 			if($rootScope.username == "admin"){
 				for(var i=0 ; i<studenten.length ; i++ ){
-				$scope.userStudenten.push(studenten[i]);
+				$rootScope.userStudenten.push(studenten[i]);
 			}
 			} else {
 			for(var i=0 ; i<studenten.length ; i++ ){
     			if(studenten[i].username == $rootScope.username){
-    				$scope.userStudenten.push(studenten[i]);
+    				$rootScope.userStudenten.push(studenten[i]);
     	}
     	}
     }
@@ -354,7 +367,7 @@ var getissues = function(){
 //getissues();*/
 });
 
-app.controller("infoController", function($scope, $http, $firebaseArray, $routeParams, dataService){
+app.controller("infoController", function($scope,$rootScope, $http, $firebaseArray, $routeParams, dataService){
 	$scope.title ="info";
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
@@ -365,6 +378,7 @@ app.controller("infoController", function($scope, $http, $firebaseArray, $routeP
 	$scope.commits = [];
 	$scope.issues = [];
 	$scope.divColor = "blue";
+
 
 
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/commits")
@@ -537,7 +551,7 @@ var date = new Date();
 
 });
 
-app.controller("repoController", function($scope,$http, dataService, $routeParams){
+app.controller("repoController", function($scope,$http, dataService, $routeParams, $rootScope){
 	$scope.title ="Repo";
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
@@ -546,7 +560,7 @@ app.controller("repoController", function($scope,$http, dataService, $routeParam
 
 });
 
-app.controller("commitController", function($scope,$http, dataService, $routeParams){
+app.controller("commitController", function($scope,$http, dataService, $routeParams, $rootScope){
 	$scope.title ="Commits";
 	$scope.commits = [];
 	$scope.message = [];
@@ -580,7 +594,7 @@ var init = function(){
 	$scope.commitaantal = $scope.commits.length;
 });
 
-app.controller("issuesController", function($scope,$http, dataService, $routeParams){
+app.controller("issuesController", function($scope,$http, dataService, $routeParams, $rootScope){
 	$scope.title ="Issues";
 	$scope.issues = [];
 	$scope.data = {};
@@ -598,7 +612,7 @@ app.controller("issuesController", function($scope,$http, dataService, $routePar
 	});
 });
 
-app.controller("readmeController", function($scope,$http, dataService, $routeParams){
+app.controller("readmeController", function($scope,$http, dataService, $routeParams, $rootScope){
 	$scope.title = "Readme";
 	$scope.markdown = [];
 	$scope.data = {};
@@ -622,32 +636,43 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 
 });
 
-app.controller("addIssueController", function($scope,$http){
+app.controller("addIssueController", function($scope,$http, $rootScope, dataService, $routeParams){
 
 
 
-		this.issue = {
+		$scope.issue = {
 		title: '',
 		body: ''
 	};
+	var url = "https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues"
 
 
 
 
 	this.upload = function(){
 		console.log("user clicked upload", this.issue);
-	$http.post("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues?title={{issue.title}}&body={{issue.body}}")
+	/*$http.post("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues", this.issue)
 	.success(function(results){
 		console.log(results.status);
 	})
 	.error(function(error){
 		console.log(error);
-	});
+	});*/
+	$http({
+		method:"POST", url , headers: { "Authorization" : "Basic " + $rootScope.username + ":" + $rootScope.password  }
+	})
+	.success(function(issue){
+		console.log(issue);
+		success(issue);
+	})
+	.error(function(issue){
+		console.log(issue);
+	})
 	
 	}
 });
 
-app.controller("lastCommitController", function($scope,$http , dataService, $routeParams){
+app.controller("lastCommitController", function($scope,$http , dataService, $routeParams, $rootScope){
 	$scope.title = "Laatste Commit";
 	$scope.commitTitle = "" ;
 	$scope.commitDate ="";
@@ -777,5 +802,23 @@ var commentcommit = function(){
 }
 
 
+
+});
+
+app.controller("scriptieController", function($scope,$http, dataService, $routeParams, $rootScope){
+	$scope.title ="Scriptie";
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+
+});
+
+app.controller("logsController", function($scope,$http, dataService, $routeParams, $rootScope){
+	$scope.title ="Logs";
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
 });
