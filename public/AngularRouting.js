@@ -199,11 +199,17 @@ app.controller("overzichtController", function($scope, $rootScope, $http, $fireb
 
 	dataService.getStudenten().then(function(studenten){
 			console.log("Studenten received.");
+			if($rootScope.username == "admin"){
+				for(var i=0 ; i<studenten.length ; i++ ){
+				$scope.userStudenten.push(studenten[i]);
+			}
+			} else {
 			for(var i=0 ; i<studenten.length ; i++ ){
     			if(studenten[i].username == $rootScope.username){
     				$scope.userStudenten.push(studenten[i]);
     	}
     	}
+    }
 	});
 	
 	//console.log("voor de forloop");
