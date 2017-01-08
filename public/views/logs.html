@@ -1,0 +1,25 @@
+	<a href="#overzicht"><input type="submit" value="Overzicht" id="overzichtbtn"></a>
+		<a href="#info/{{x.naam}}"><input type="submit" value="Info Student" id="infobtn" ></a>
+
+		<select id="selectname">
+ 			<option value="volvo" ng-repeat="x in userStudenten">{{x.naam}}</option>
+		</select>
+		<div id="content">
+			<div id="reponav">
+				<a href="#readme/{{student.naam}}"><input type="submit" value="Read Me" id="alleCommitsbtn"></a>
+				<a href="#commits/{{student.naam}}"><input type="submit" value="Alle commits" id="alleCommitsbtn"></a>
+				<a href="#issues/{{student.naam}}"><input type="submit" value="Issues" id="issuebtn" ></a>
+				<a href="#scriptie/{{student.naam}}"><input type="submit" value="scriptie" id="scriptiebtn"></a>
+				<a href="#logs/{{student.naam}}"><input type="submit" value="Laatste logentry" id="logbtn"></a>
+				<input type="submit" value="Add comment" id="commentbtn" onclick="window.location.href='repo.html'" >
+				<a href="#lastCommit/{{student.naam}}"><input type="submit" value="Laatste commit" id="commentbtn"  ></a>
+				<a href="#addIssues/{{student.naam}}"><input type="submit" value="Add issue" id="addissuebtn"></a>
+			</div>
+			<div id="repo">
+				<h3>{{title}}</h3>
+	
+					
+			</div>
+
+
+		</div>
