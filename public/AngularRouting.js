@@ -805,20 +805,64 @@ var commentcommit = function(){
 
 });
 
-app.controller("scriptieController", function($scope,$http, dataService, $routeParams, $rootScope){
-	$scope.title ="Scriptie";
+app.controller("readmeController", function($scope,$http, dataService, $routeParams, $rootScope){
+	$scope.title = "Readme";
+	$scope.markdown = [];
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+	console.log($scope.student);
+
+	$http.get("https://raw.githubusercontent.com/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/master/README.md")
+	.success(function(results){
+		console.log(results);
+		$scope.markdown = results;
+	})
+	.error(function(error){
+		console.log(error);
+	});
+
+	var converter = new showdown.Converter(),
+		text = $scope.readme,
+		html = converter.makeHtml(text);
+
+});
+
+app.controller("scriptieController", function($scope,$http, dataService, $routeParams, $rootScope){
+	$scope.title ="Scriptie";
+	$scope.markdown = [];
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+
+	$http.get("https://raw.githubusercontent.com/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/master/Scriptie/Scriptie.md")
+	.success(function(results){
+		console.log(results);
+		$scope.markdown = results;
+	})
+	.error(function(error){
+		console.log(error);
+	});
 
 });
 
 app.controller("logsController", function($scope,$http, dataService, $routeParams, $rootScope){
 	$scope.title ="Logs";
+	$scope.markdown = [];
 	$scope.data = {};
 	$scope.data.studenten = dataService.getStudenten();
 	$scope.student = [];
 	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
+
+	$http.get("https://raw.githubusercontent.com/" + $scope.student.gitUserName + "/" + $scope.student.gitRepo + "/master/Log/Log.md")
+	.success(function(results){
+		console.log(results);
+		$scope.markdown = results;
+	})
+	.error(function(error){
+		console.log(error);
+	});
 
 });
