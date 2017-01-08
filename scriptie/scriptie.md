@@ -1,5 +1,5 @@
-#Scriptie
+# Scriptie
 
-##Florian Pieters
+## Florian Pieters
 
 Dit is de scriptie file van Florian Pieters
