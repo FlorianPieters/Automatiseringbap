@@ -1,9 +1,4 @@
-//require('angular');
-//require('angular-sanitize');
-//global.markdownit = require('markdown-it');
-//require('angular-markdown-it');
-
-var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase", "mdMarkdownIt"/*"yaru22.directives.md"*/]);
+var app = angular.module("myApp", ["ngRoute", "satellizer", "firebase", "mdMarkdownIt"]);
 
 
 app.constant("db", {
@@ -178,7 +173,6 @@ app.controller("loginController", function($scope,$http, $auth, $rootScope, $loc
 					console.log("password checks out");
 					$rootScope.password = $scope.password;
 					$rootScope.loggedIn = true;
-					//$http.defaults.headers.common.Authorization = 'Basic YmVlcDpib29w' + $rootScope.username + ":" + $rootScope.password;
 					$location.path('/overzicht');
 				}
 			} 
@@ -225,83 +219,7 @@ app.controller("overzichtController", function($scope, $rootScope, $http, $fireb
     }
 	});
 	
-	//console.log("voor de forloop");
-	
-		
-	
-		
-	
 
-
-
-
-/*$scope.gitNaam = "";
-$scope.gitRepo = "";
-
-$scope.commits = [];
-commitcount = [];
-$scope.issue = [];
-
-
-var promise = dataService2.getStudenten();
-
-promise.then(function(data){
-
-
-
-
-	console.log("in promise");
-	for(var i=0; i<data.length;i++){
-
-$scope.gitNaam = data[i].gitUserName;
-//console.log($scope.gitNaam);
-$scope.gitRepo = data[i].gitRepo;
-
-
-//$scope.data[i].gitUserName;
-//
-		//console.log($scope.data[i].gitUserName);
-		//console.log($scope.data[i].gitRepo);
-		$http.get("https://api.github.com/repos/" + $scope.gitNaam + "/" + $scope.gitRepo + "/issues?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-		$scope.issue = results.length;
-  		console.log(results.length);
-	})
-	.error(function(error){
-		console.log(error);
-	})
-
-	$http.get("https://api.github.com/repos/" + $scope.gitNaam + "/" + $scope.gitRepo + "/stats/contributors?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-   		console.log(results);	
-   		commitcount = results;
-		$scope.commits = commitcount[0].total;	
-		console.log($scope.commits);
-	})
-	.error(function(error){
-		console.log(error);
-	})
-	 
-
-		//console.log(data[i]);
-		//console.log(data[i].gitUserName);
-		//console.log(data[i].gitRepo);
-
-
-	}
-	$scope.studenten = [] ;
-	$scope.studenten = data;
-	});
-
-
-
-
-
-/*$scope.studenten = [] ;
-$scope.studenten = data;*/
-//console.log($scope.studenten);
 		this.student = {
 		bachelorproef: '',
 		bedrijf: '',
@@ -320,51 +238,6 @@ $scope.studenten = data;*/
 		console.log("user clicked upload", this.student);
 		var newDataPush = ref.push(this.student);
 	};
-
-
-//console.log("testing123")
-	//console.log($scope.data.studenten);
-	
-//	console.log(accestoken)
-
-
-
-
-
-
-
-/*var getcommit = function(){
-
-	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/contributors?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-   		console.log(results);	
-   		commitcount = results;
-		$scope.commits = commitcount[0].total;	
-	})
-	.error(function(error){
-		console.log(error);
-	})
-	 
-	
-};
-
-var getissues = function(){
-
-	console.log("init");
-	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/issues?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
-	//$http.get($scope.studen.github +"/commits")
-	.success(function(results){
-		$scope.issue = results.length;
-  	//	console.log(results.length);
-	})
-	.error(function(error){
-		console.log(error);
-	})
-}
-//getcommit();
-//getissues();*/
 });
 
 app.controller("infoController", function($scope,$rootScope, $http, $firebaseArray, $routeParams, dataService){
@@ -399,28 +272,19 @@ app.controller("infoController", function($scope,$rootScope, $http, $firebaseArr
 		console.log(error);
 	});
 
+
 	// activiteit bol
-
-
-
 var getLastSha = function(){
 
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		//$scope.commits = results;
-		
-		
-
-		console.log(results);
-	
+		//console.log(results);
 		$scope.lastSha = results[0].sha;
-		
 		//console.log($scope.lastSha);
-
-		console.log("TESTING");
+		//console.log("TESTING");
 		//console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
 		//getLastCommit();
-
 
 		getLastCommit();
 
@@ -434,25 +298,14 @@ var getLastCommit = function(){
 
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha + "?access_token=452c67b46a514247c4844b4b7fc306850ac9752e" )
 	.success(function(results){
-		//$scope.commits = results;
-		
-
-		//$scope.githubDateFormat = results.commit.author.date;
-		//console.log(githubDateFormat);
-		 
-
-		
 		//console.log($scope.commitDate);
-
-		console.log("in last commit");
+		//console.log("in last commit");
 		//console.log(results);
-		
-		console.log(results.commit.author.date);
+		//console.log(results.commit.author.date);
 		$scope.gitDate =results.commit.author.date;
-	
-
 		$scope.lastDate = $scope.gitDate.split("T");
-		$scope.commitDate = $scope.lastDate[0]; // -----> dees word bij datum afgedrukt dus moet wss worde opgeslage  :p
+		$scope.commitDate = $scope.lastDate[0]; 
+
 		checkActivity();
 
 
@@ -698,19 +551,12 @@ var getLastSha = function(){
 	$http.get("https://api.github.com/repos/" + $scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits?access_token=452c67b46a514247c4844b4b7fc306850ac9752e")
 	.success(function(results){
 		//$scope.commits = results;
-		
-		
-
 		//console.log(results);
-	
-		$scope.lastSha = results[0].sha;
-		
+		$scope.lastSha = results[0].sha;	
 		console.log($scope.lastSha);
-
 		//console.log("TESTING");
 		//console.log($scope.student.gitUserName +"/" + $scope.student.gitRepo + "/commits/" + $scope.lastSha);
 		//getLastCommit();
-
 
 		getLastCommit();
 
@@ -751,8 +597,7 @@ var getLastCommit = function(){
 	})
 }
 
-$scope.activity =[];
-
+/*
 var weekCommit = function(){
 
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/stats/code_frequency")
@@ -771,15 +616,12 @@ var weekCommit = function(){
 	.error(function(error){
 		console.log(error);
 	})
-}
+}*/
 
 
 	getLastSha();
 	
-	//weekCommit();
-
-//	$scope.commitaantal = $scope.commits.length;
-
+	
 	this.comment = {
 		
 		body: ''
@@ -790,9 +632,6 @@ var commentcommit = function(){
 	$http.get("https://api.github.com/repos/FlorianPieters/Automatiseringbap/commits/913258dd98e8f86f5320971d6cdf8b794d0a23e8/comments?body={{comment.body}}")
 	.success(function(results){
 		//$scope.commits = results;
-	
-
-	
 		
 
 	})

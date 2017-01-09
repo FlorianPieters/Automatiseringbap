@@ -1,16 +1,10 @@
- var path = require('path');
+var path = require('path');
 var express = require('express');
 var logger = require('morgan');
 var https = require('https');
 
-
-
-//git
 var qs = require('querystring');
-//accessToken='';
-//var aToken=[
-//{aToken: ""}];
-//var apiAccesUrl = 'https://api.github.com/user?access_token=';
+
 
 
 
