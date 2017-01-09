@@ -28,13 +28,19 @@
 	vertical-align: top;
 
 	width: 100%;
-	height: 480px;
+	  
+
+}
+
 
 }
 
 #footer {
 	display: inline-block;
 	vertical-align: top;
+	position: absolute;
+    	left: 0;
+   		bottom: 0;
 
 	width: 100%;
 	height:135px;
@@ -56,30 +62,23 @@
 
 #overzichttbl {
 	/*display: inline-block;*/
+		vertical-align: top;
 	width: 80%;
 	margin-left: auto ;
   margin-right: auto ;
-  margin-top: 50px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  
+
 }
-
-#activiteit {
-	position: absolute;
-    left: 1225px;
-    top: 209px;
+@media screen and (max-width: 1650px) {
+    #overzichttbl {
+        height: 480px;
+        overflow: scroll;
+    }
 }
-
-   #circle, #circle1, #circle2 {
-
-      width: 25px;
-      height: 25px;
-      -webkit-border-radius: 25px;
-      -moz-border-radius: 25px;
-      border-radius: 25px;
-      background: green;
-      margin-top: 10px;
+@media screen and (min-width: 1650px) {
+    #overzichttbl {
+        
     }
-
-    #circle2 {
-    	background: red;
-    }
-
+}
