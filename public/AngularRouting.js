@@ -161,7 +161,6 @@ app.controller("loginController", function($scope,$http, $auth, $rootScope, $loc
 	var ref = firebase.database().ref().child("users");
 	$scope.users =[ ];
 	$scope.users = $firebaseArray(ref);
-	console.log($scope.users);
 
 	$scope.submit = function(){
 		console.log("submit");
@@ -498,6 +497,10 @@ app.controller("readmeController", function($scope,$http, dataService, $routePar
 
 app.controller("addIssueController", function($scope,$http, $rootScope, dataService, $routeParams){
 
+	$scope.data = {};
+	$scope.data.studenten = dataService.getStudenten();
+	$scope.student = [];
+	$scope.student = dataService.getStudentAt($routeParams.studentNaam);
 
 
 		$scope.issue = {
