@@ -199,25 +199,32 @@ app.controller("registerController", function($scope, $http){
 app.controller("overzichtController", function($scope, $rootScope, $http, $firebaseArray, $routeParams, dataService){
 	console.log("overzichtController");
 	$scope.title ="overzicht";
-
 	$scope.data = {};
 	$scope.data.studenten = [];
 	$rootScope.userStudenten = [];
-
-	dataService.getStudenten().then(function(studenten){
+	//$rootScope.userStudenten.splice(0, $rootScope.userStudenten.length);
+	var getUserStudenten = function(){
+		dataService.getStudenten().then(function(studenten){
 			console.log("Studenten received.");
+			
 			if($rootScope.username == "admin"){
+				//$scope.userStudenten.splice(0, $scope.userStudenten.length);
 				for(var i=0 ; i<studenten.length ; i++ ){
-				$rootScope.userStudenten.push(studenten[i]);
+				$rootScope.userStudenten.splice(i,$rootScope.userStudenten.length,studenten[i]);
+				//console.log($scope.userStudenten);
 			}
 			} else {
+				//$scope.userStudenten.splice(0, $scope.userStudenten.length);
 			for(var i=0 ; i<studenten.length ; i++ ){
     			if(studenten[i].username == $rootScope.username){
-    				$rootScope.userStudenten.push(studenten[i]);
+    				$rootScope.userStudenten.splice(i,$rootScope.userStudenten.length,studenten[i]);
     	}
     	}
     }
 	});
+	}
+	
+	getUserStudenten();
 	
 
 		this.student = {
