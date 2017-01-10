@@ -210,13 +210,16 @@ app.controller("overzichtController", function($scope, $rootScope, $http, $fireb
 				//$scope.userStudenten.splice(0, $scope.userStudenten.length);
 				for(var i=0 ; i<studenten.length ; i++ ){
 				$rootScope.userStudenten.splice(i,$rootScope.userStudenten.length,studenten[i]);
-				//console.log($scope.userStudenten);
 			}
+				//console.log($scope.userStudenten);
+			
 			} else {
 				//$scope.userStudenten.splice(0, $scope.userStudenten.length);
 			for(var i=0 ; i<studenten.length ; i++ ){
     			if(studenten[i].username == $rootScope.username){
+    				if($rootScope.userStudenten.indexOf(current)<0){
     				$rootScope.userStudenten.splice(i,$rootScope.userStudenten.length,studenten[i]);
+    			}
     	}
     	}
     }
@@ -522,7 +525,7 @@ app.controller("addIssueController", function($scope,$http, $rootScope, dataServ
 		console.log(error);
 	});*/
 	$http({
-		method:"POST", url , headers: { "Authorization" : "Basic " + $rootScope.username + ":" + $rootScope.password  }
+		method:"POST", url , headers: { "Authorization" : "Basic " + $rootScope.username + " : " + $rootScope.password  }
 	})
 	.success(function(issue){
 		console.log(issue);

@@ -3,7 +3,7 @@
 	<h1>{{title}}</h1>
 		<div>Register new username and password.</div>
 		<p>(Should be the same as your Github username)</p>
-		<input type="Text" ng-model="user.username">
+		<p><input type="text" ng-model="user.username" name="Username" id="Username" required value="Username" onBlur="if(this.value=='')this.value='Username'" onFocus="if(this.value=='Username')this.value='' "></p> <!-- JS because of IE support; better: placeholder="Username" -->
 		<input type="password" ng-model="user.password">
 		<a href="#login"><input type="submit" ng-click="submit()" value="Register."></a>
 </div>
